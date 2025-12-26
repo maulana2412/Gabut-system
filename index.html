@@ -1,0 +1,202 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Bucin Bunga Ungu</title>
+
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+
+body{
+    min-height:100vh;
+    overflow:hidden;
+    font-family:'Segoe UI',sans-serif;
+    background: radial-gradient(circle at top, #3a0a4b, #120016);
+}
+
+/* 🌸 BUNGA JATUH */
+#flowers{
+    position:fixed;
+    inset:0;
+    pointer-events:none;
+    z-index:1;
+}
+.flower-fall{
+    position:absolute;
+    top:-50px;
+    font-size:24px;
+    animation:jatuh linear infinite;
+    opacity:.8;
+}
+@keyframes jatuh{
+    to{transform:translateY(110vh) rotate(360deg)}
+}
+
+/* 🌸 BUNGA MEKAR */
+.garden{
+    position:fixed;
+    inset:0;
+    z-index:2;
+}
+.bloom{
+    position:absolute;
+    width:120px;
+    height:120px;
+    pointer-events:none;
+}
+.petal{
+    position:absolute;
+    width:42px;
+    height:78px;
+    background:linear-gradient(to top,#5e2b97,#c38df3);
+    border-radius:50% 50% 0 0;
+    top:22px;
+    left:39px;
+    transform-origin:bottom center;
+    transform:rotate(var(--r)) scale(0);
+    opacity:0;
+    animation:bloom 2.5s ease forwards;
+    filter:drop-shadow(0 0 10px rgba(195,141,243,.7));
+}
+.petal:nth-child(1){--r:0deg}
+.petal:nth-child(2){--r:45deg}
+.petal:nth-child(3){--r:90deg}
+.petal:nth-child(4){--r:135deg}
+.petal:nth-child(5){--r:180deg}
+.petal:nth-child(6){--r:225deg}
+.petal:nth-child(7){--r:270deg}
+.petal:nth-child(8){--r:315deg}
+
+.center{
+    position:absolute;
+    width:28px;
+    height:28px;
+    background:radial-gradient(circle,#fff4b8,#ffcc00);
+    border-radius:50%;
+    top:46px;
+    left:46px;
+    transform:scale(0);
+    animation:centerBloom 2.5s ease forwards;
+    box-shadow:0 0 15px rgba(255,204,0,.9);
+}
+@keyframes bloom{
+    to{transform:rotate(var(--r)) scale(1);opacity:1}
+}
+@keyframes centerBloom{
+    to{transform:scale(1)}
+}
+
+/* 💬 TEKS */
+.text{
+    position:fixed;
+    bottom:30px;
+    width:100%;
+    text-align:center;
+    font-size:18px;
+    color:#f3d9ff;
+    opacity:0;
+    transition:.8s;
+    z-index:4;
+}
+
+/* 💌 CARD */
+.card{
+    background:white;
+    margin:60px auto;
+    padding:30px;
+    border-radius:20px;
+    width:320px;
+    text-align:center;
+    box-shadow:0 10px 30px rgba(0,0,0,.2);
+    z-index:3;
+    position:relative;
+}
+h1{color:#ff4d6d}
+p{margin:20px 0;font-size:16px}
+button{
+    background:#ff4d6d;
+    color:white;
+    border:none;
+    padding:10px 20px;
+    border-radius:12px;
+    cursor:pointer;
+}
+footer{
+    margin-top:15px;
+    font-size:13px;
+    font-style:italic;
+}
+</style>
+</head>
+
+<body>
+
+<!-- 🌸 BUNGA JATUH -->
+<div id="flowers"></div>
+
+<!-- 🌸 BUNGA MEKAR -->
+<div class="garden" id="garden"></div>
+<div class="text" id="text">Setiap klik, ada rahasia yang mekar 💜</div>
+
+<!-- 💌 CARD -->
+<div class="card">
+<h1>WOI, NGANA 💜</h1>
+<p id="pesan">Aku penipu, tapi jujur jangan klik.</p>
+<button onclick="bucin()">JGN KLIK AYING</button>
+<footer>H.D.M</footer>
+</div>
+
+<script>
+/* 🌸 BUNGA JATUH */
+const flowers=document.getElementById("flowers");
+const bunga=["🌸","🌺","🌷","💐"];
+setInterval(()=>{
+    const f=document.createElement("div");
+    f.className="flower-fall";
+    f.innerText=bunga[Math.floor(Math.random()*bunga.length)];
+    f.style.left=Math.random()*100+"vw";
+    f.style.animationDuration=(5+Math.random()*5)+"s";
+    flowers.appendChild(f);
+    setTimeout(()=>f.remove(),10000);
+},400);
+
+/* 🌸 BUNGA MEKAR */
+const garden=document.getElementById("garden");
+const text=document.getElementById("text");
+document.addEventListener("click",e=>{
+    const bloom=document.createElement("div");
+    bloom.className="bloom";
+    bloom.style.left=e.clientX-60+"px";
+    bloom.style.top=e.clientY-60+"px";
+
+    for(let i=0;i<8;i++){
+        const p=document.createElement("div");
+        p.className="petal";
+        bloom.appendChild(p);
+    }
+    const c=document.createElement("div");
+    c.className="center";
+    bloom.appendChild(c);
+
+    garden.appendChild(bloom);
+    text.style.opacity=1;
+    setTimeout(()=>text.style.opacity=0,2500);
+    setTimeout(()=>bloom.remove(),5000);
+});
+
+/* 💌 BUCIN */
+function bucin(){
+    const pesan=document.getElementById("pesan");
+    const kalimat=[
+        "Aku pura-pura kuat, padahal butuh pijitan mu.",
+        "Kalau kamu error, maka aku lebih error ayin.",
+        "Aku nggak butuh GPS, karna nyasarnya sama kamu juga kok.",
+        "Logikaku kalah karna kau gk pernah pakek logikaku."
+    ];
+    pesan.innerText=kalimat[Math.floor(Math.random()*kalimat.length)];
+}
+</script>
+
+</body>
+</html>
