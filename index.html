@@ -2,216 +2,602 @@
 <html lang="id">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Bucin Bunga Ungu</title>
-
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<title>SIGA-8: ANAK KOS EDITION (FULL GRADES)</title>
 <style>
-*{margin:0;padding:0;box-sizing:border-box}
-
-body{
-    min-height:100vh;
-    overflow:hidden;
-    font-family:'Segoe UI',sans-serif;
-    background: radial-gradient(circle at top, #3a0a4b, #120016);
+/* =========================================
+   1. CORE STYLES & VARIABLES
+   ========================================= */
+:root {
+    --bg-santuy: radial-gradient(circle at 50% 10%, #4a148c, #311b92, #000000);
+    --bg-sepuh: radial-gradient(circle at 50% 10%, #b71c1c, #880e4f, #000000);
+    
+    --glass-bg: rgba(255, 255, 255, 0.1);
+    --glass-border: 1px solid rgba(255, 255, 255, 0.15);
+    --glass-blur: blur(12px);
+    
+    --btn-santuy: linear-gradient(135deg, #9c27b0, #673ab7);
+    --btn-sepuh: linear-gradient(135deg, #d32f2f, #c2185b);
 }
 
-/* 🌸 BUNGA JATUH */
-#flowers{
-    position:fixed;
-    inset:0;
-    pointer-events:none;
-    z-index:1;
-}
-.flower-fall{
-    position:absolute;
-    top:-50px;
-    font-size:24px;
-    animation:jatuh linear infinite;
-    opacity:.8;
-}
-@keyframes jatuh{
-    to{transform:translateY(110vh) rotate(360deg)}
+* { margin:0; padding:0; box-sizing:border-box; user-select: none; -webkit-tap-highlight-color: transparent; }
+
+body {
+    font-family: 'Segoe UI', 'Roboto', Helvetica, Arial, sans-serif;
+    background: var(--bg-santuy);
+    color: #fff;
+    overflow-x: hidden;
+    min-height: 100vh;
+    transition: background 0.8s ease;
+    padding-bottom: 60px;
 }
 
-/* 🌸 BUNGA MEKAR */
-.garden{
-    position:fixed;
-    inset:0;
-    z-index:2;
-}
-.bloom{
-    position:absolute;
-    width:120px;
-    height:120px;
-    pointer-events:none;
-}
-.petal{
-    position:absolute;
-    width:42px;
-    height:78px;
-    background:linear-gradient(to top,#5e2b97,#c38df3);
-    border-radius:50% 50% 0 0;
-    top:22px;
-    left:39px;
-    transform-origin:bottom center;
-    transform:rotate(var(--r)) scale(0);
-    opacity:0;
-    animation:bloom 2.5s ease forwards;
-    filter:drop-shadow(0 0 10px rgba(195,141,243,.7));
-}
-.petal:nth-child(1){--r:0deg}
-.petal:nth-child(2){--r:45deg}
-.petal:nth-child(3){--r:90deg}
-.petal:nth-child(4){--r:135deg}
-.petal:nth-child(5){--r:180deg}
-.petal:nth-child(6){--r:225deg}
-.petal:nth-child(7){--r:270deg}
-.petal:nth-child(8){--r:315deg}
+body.mode-hard { background: var(--bg-sepuh); }
 
-.center{
-    position:absolute;
-    width:28px;
-    height:28px;
-    background:radial-gradient(circle,#fff4b8,#ffcc00);
-    border-radius:50%;
-    top:46px;
-    left:46px;
-    transform:scale(0);
-    animation:centerBloom 2.5s ease forwards;
-    box-shadow:0 0 15px rgba(255,204,0,.9);
-}
-@keyframes bloom{
-    to{transform:rotate(var(--r)) scale(1);opacity:1}
-}
-@keyframes centerBloom{
-    to{transform:scale(1)}
+/* =========================================
+   2. ANIMATION & PARTICLES
+   ========================================= */
+.watermark-hdm {
+    position: fixed; top: 15px; right: 20px; font-family: monospace; font-weight: 900;
+    color: rgba(255, 255, 255, 0.5); border: 2px solid rgba(255, 255, 255, 0.3);
+    padding: 4px 8px; border-radius: 6px; z-index: 9999; pointer-events: none; font-size: 12px;
 }
 
-/* 💬 TEKS */
-.text{
-    position:fixed;
-    bottom:30px;
-    width:100%;
-    text-align:center;
-    font-size:18px;
-    color:#f3d9ff;
-    opacity:0;
-    transition:.8s;
-    z-index:4;
+@keyframes shake { 0%, 100% { transform: translateX(0); } 25% { transform: translateX(-10px); } 75% { transform: translateX(10px); } }
+.shake-anim { animation: shake 0.4s cubic-bezier(.36,.07,.19,.97) both; }
+
+@keyframes popUp { 0% { transform: scale(0.95); opacity: 0; } 100% { transform: scale(1); opacity: 1; } }
+.pop-anim { animation: popUp 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275); }
+
+@keyframes floatUpFade {
+    0% { transform: translateY(0) scale(0.5) rotate(0deg); opacity: 1; }
+    100% { transform: translateY(-120px) scale(1.2) rotate(360deg); opacity: 0; }
 }
 
-/* 💌 CARD */
-.card{
-    background:white;
-    margin:60px auto;
-    padding:30px;
-    border-radius:20px;
-    width:320px;
-    text-align:center;
-    box-shadow:0 10px 30px rgba(0,0,0,.2);
-    z-index:3;
-    position:relative;
+.flower-particle {
+    position: fixed; pointer-events: none; z-index: 10000; font-size: 24px;
+    animation: floatUpFade 1.5s forwards ease-out;
+    text-shadow: 0 0 10px rgba(255,255,255,0.5);
 }
-h1{color:#ff4d6d}
-p{margin:20px 0;font-size:16px}
-button{
-    background:#ff4d6d;
-    color:white;
-    border:none;
-    padding:10px 20px;
-    border-radius:12px;
-    cursor:pointer;
+
+/* =========================================
+   3. LAYOUT & GLASSMORPHISM COMPONENTS
+   ========================================= */
+.container { 
+    padding: 20px; max-width: 550px; margin: 0 auto; position: relative; z-index: 2;
 }
-footer{
-    margin-top:15px;
-    font-size:13px;
-    font-style:italic;
+
+.hidden { display: none !important; }
+.center { text-align: center; }
+
+/* TOP BANNER */
+.top-banner {
+    text-align: center; font-size: 14px; font-weight: bold; color: #ffd700;
+    padding: 15px 0 5px 0; letter-spacing: 1.5px; text-shadow: 0 2px 5px rgba(0,0,0,0.5);
+    border-bottom: 1px solid rgba(255,255,255,0.1); margin-bottom: 10px;
 }
+
+header {
+    padding: 5px 10px 20px 10px; text-align: center; font-size: 20px; font-weight: 900; 
+    text-transform: uppercase; letter-spacing: 1px;
+    background: linear-gradient(to bottom, #fff, #e0e0e0); 
+    -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+    margin-bottom: 10px; filter: drop-shadow(0 2px 4px rgba(0,0,0,0.3));
+}
+
+/* GLASS CARD STYLE */
+.glass-card {
+    background: var(--glass-bg);
+    backdrop-filter: var(--glass-blur);
+    -webkit-backdrop-filter: var(--glass-blur);
+    border: var(--glass-border);
+    border-radius: 16px;
+    padding: 20px;
+    box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.3);
+    margin-bottom: 15px;
+}
+
+/* INPUT & BUTTONS */
+input, button { width: 100%; padding: 16px; border-radius: 12px; border: none; font-size: 16px; outline: none; margin-bottom: 12px; transition: 0.3s; font-weight: bold;}
+input { 
+    background: rgba(0,0,0,0.3); color: #fff; text-align: center; 
+    border: 1px solid rgba(255,255,255,0.2); 
+}
+input:focus { border-color: #fff; background: rgba(0,0,0,0.5); }
+
+button {
+    background: var(--btn-santuy); color: #fff;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.2);
+    text-transform: uppercase;letter-spacing: 0.5px;
+}
+button:active { transform: scale(0.98); }
+body.mode-hard button { background: var(--btn-sepuh); }
+.btn-mode { background: #333 !important; border: 1px solid #555; color: #ccc; font-size: 14px; }
+.btn-danger { background: transparent !important; border: 1px solid #ff3333; color: #ff3333; font-size: 13px; }
+
+/* KARTU MENU (KHUSUS KRS) */
+.krs-grid { display: flex; flex-direction: column; gap: 12px; }
+
+.matkul-card {
+    display: flex; justify-content: space-between; align-items: center;
+    background: rgba(255, 255, 255, 0.07); backdrop-filter: blur(10px);
+    padding: 18px; border-radius: 14px; border: 1px solid rgba(255,255,255,0.1);
+    cursor: pointer; transition: all 0.2s; position: relative; overflow: hidden;
+}
+.matkul-card:hover { background: rgba(255,255,255,0.12); border-color: rgba(255,255,255,0.3); transform: translateY(-2px);}
+.matkul-card:active { transform: scale(0.98) translateY(0); }
+
+.mk-left { text-align: left; width: 65%; }
+.mk-code { font-size: 11px; color: #ccc; letter-spacing: 0.5px; margin-bottom: 4px; }
+.mk-name { font-size: 15px; font-weight: bold; color: #fff; }
+.mk-right { text-align: right; width: 35%; display: flex; flex-direction: column; align-items: flex-end; gap: 5px; }
+
+/* BADGE NILAI PER MATKUL */
+.mk-sks { 
+    font-size: 11px; color: #aaa; margin-bottom: 2px;
+}
+.mk-grade-badge {
+    background: #444; color: #fff; padding: 4px 10px; border-radius: 6px; 
+    font-size: 14px; font-weight: 900; box-shadow: 0 2px 5px rgba(0,0,0,0.3);
+    min-width: 40px; text-align: center;
+}
+
+/* AREA GAME & STATS */
+#stats-bar {
+    display: flex; justify-content: space-between; align-items: center;
+    padding: 12px 18px; background: rgba(0,0,0,0.2);
+    border-radius: 12px; margin-bottom: 20px; font-size: 14px;
+    border: 1px solid rgba(255,255,255,0.1);
+}
+.ipk-badge {
+    background: #444; color: #fff; padding: 5px 10px; border-radius: 8px; font-weight: 900; display: flex; align-items: center; gap: 8px;
+}
+.grade-letter {
+    font-size: 18px; color: #ffd700; text-shadow: 0 0 5px rgba(255, 215, 0, 0.6);
+}
+
+#q { font-size: 1.2rem; font-weight: bold; min-height: 100px; display: flex; align-items: center; justify-content: center; text-align: center; margin-bottom: 25px; line-height: 1.4; text-shadow: 0 2px 4px rgba(0,0,0,0.5); }
+
+#solusi-box {
+    display: none; margin-top: 20px; background: rgba(255,255,255,0.1); 
+    border-left: 4px solid #ffd700; border-radius: 8px;
+    padding: 15px; font-size: 14px; font-family: 'Courier New', monospace; text-align: left;
+    line-height: 1.5; color: #e0e0e0;
+}
+
+/* QUOTE BOX BARU */
+.quote-box {
+    margin-bottom: 20px; padding: 15px;
+    background: rgba(255, 255, 255, 0.05);
+    border-radius: 12px; border: 1px dashed rgba(255,255,255,0.3);
+    font-style: italic; color: #ccc; font-size: 13px; line-height: 1.4;
+}
+
 </style>
 </head>
-
 <body>
 
-<!-- 🌸 BUNGA JATUH -->
-<div id="flowers"></div>
+<div class="top-banner">✨ ANAK UNTAD PEJUANG KOS ✨</div>
+<div class="watermark-hdm">H.D.M</div>
+<header>TES KEGABUTAN</header>
 
-<!-- 🌸 BUNGA MEKAR -->
-<div class="garden" id="garden"></div>
-<div class="text" id="text">Setiap klik, ada rahasia yang mekar 💜</div>
+<div class="container pop-anim" id="loginPage">
+    <div class="glass-card" style="margin-top:30px;">
+        <h2 style="margin-bottom: 10px; color:#ffd700;">TABE', ABSEN DULU</h2>
+        <p style="font-size:13px; opacity:0.8; margin-bottom:25px;">Kasih masuk nama panggilan dulu sayang.</p>
+        <input type="text" id="inputNama" placeholder="Nama ta' siapa?">
+        <button onclick="saveUser()">jangan di pencet</button>
+    </div>
+</div>
 
-<!-- 💌 CARD -->
-<div class="card">
-<h1>WOI, NGANA 💜</h1>
-<p id="pesan">Aku penipu, tapi jujur jangan klik.</p>
-<button onclick="bucin()">JGN KLIK AYING</button>
-<footer>H.D.M</footer>
+<div class="container hidden" id="modePage">
+    <h3 class="center" style="margin-bottom:25px; color:#fff; text-shadow: 0 2px 4px rgba(0,0,0,0.5);">PILIH LEVEL TA' BOSKU:</h3>
+    <button onclick="selectMode('normal')" style="background:linear-gradient(135deg, #9c27b0, #673ab7); padding: 25px;">😎 MODE SANTUY (Masih Maba)</button>
+    <button onclick="selectMode('hard')" style="background:linear-gradient(135deg, #d32f2f, #c2185b); padding: 25px;">💀 MODE SEPUH (ARTEFAK KAMPUS)</button>
+</div>
+
+<div class="container hidden" id="home">
+    <div id="stats-bar" class="glass-card" style="padding: 15px; margin-bottom: 15px;">
+        <div style="text-align:left">
+            <span id="welcomeName" style="display:block; font-weight:900; font-size:16px;">Halo, User</span>
+            <span id="modeDisplay" style="font-size:11px; opacity:0.7; letter-spacing:1px;">MODE</span>
+        </div>
+        <div class="ipk-badge">
+            <div style="text-align:right; line-height:1.1;">
+                <span style="font-size:10px; display:block;">IPK</span>
+                <span id="ipkDisplay" style="font-size:16px;">0.00</span>
+            </div>
+            <div class="grade-letter" id="gradeDisplay">-</div>
+        </div>
+    </div>
+
+    <div class="quote-box center">
+        <span id="dailyQuote">"Tunggu sebentar..."</span>
+    </div>
+
+    <h4 style="margin-bottom:15px; padding-left: 5px; opacity: 0.9; font-size: 13px; letter-spacing: 1px;">KRS & HASIL STUDINYA SAYAG:</h4>
+    
+    <div class="krs-grid" id="matkulList"></div>
+    
+    <div style="margin-top:30px; display:flex; flex-direction:column; gap:10px;">
+        <button class="btn-mode" onclick="switchModeWithoutReset()">🔀 Ganti Level Dulu</button>
+        <button class="btn-danger" onclick="resetGame()">🗑️ Ulang Dari Awal (Reset)</button>
+    </div>
+</div>
+
+<div class="container hidden" id="gameArea">
+    <div id="stats-bar" style="background:transparent; border:none; padding:0;">
+        <span id="matkulName" style="font-weight:900; color:#ffd700; letter-spacing:1px;">MATKUL</span>
+        <button onclick="backHome()" style="width:auto; padding:8px 15px; font-size:12px; background:rgba(255,255,255,0.1); border:1px solid rgba(255,255,255,0.3); box-shadow:none; margin:0;">KEMBALI KE KRS</button>
+    </div>
+
+    <div class="glass-card" style="cursor:default; margin: 20px 0; padding: 10px 20px;">
+        <div id="q">Loading soal...</div>
+    </div>
+
+    <input type="text" id="ans" placeholder="Isi jawaban ta' di sini..." autocomplete="off">
+    <div id="res" class="center" style="font-weight:900; margin:15px 0; font-size: 18px; min-height: 24px;"></div>
+    
+    <div id="solusi-box">
+        <div style="font-weight:bold; margin-bottom:8px; color:#ffd700;">💡 PENJELASAN:</div>
+        <div id="solusi-text"></div>
+    </div>
+
+    <button onclick="checkAnswer()" id="btnJawab" style="margin-top: 10px;">KUNCI MI (SUBMIT)</button>
+    <button style="background:rgba(0,0,0,0.4); border: 1px solid #555; color:#aaa;" onclick="generateQuestion()" id="btnSkip">SKIP MI DULU</button>
 </div>
 
 <script>
-/* 🌸 BUNGA JATUH */
-const flowers=document.getElementById("flowers");
-const bunga=["🌸","🌺","🌷","💐"];
-setInterval(()=>{
-    const f=document.createElement("div");
-    f.className="flower-fall";
-    f.innerText=bunga[Math.floor(Math.random()*bunga.length)];
-    f.style.left=Math.random()*100+"vw";
-    f.style.animationDuration=(5+Math.random()*5)+"s";
-    flowers.appendChild(f);
-    setTimeout(()=>f.remove(),10000);
-},400);
+/* =========================================
+   DATA & CONFIG
+   ========================================= */
+const $ = (id) => document.getElementById(id);
+let userData = { name: "", total: 0, benar: 0, matkulStats: {} };
+let currentMode = "normal"; 
+let currentMatkul = {}; 
+let currentQ = { a: "", s: "" }; 
+let isLocked = false;
 
-/* 🌸 BUNGA MEKAR */
-const garden=document.getElementById("garden");
-const text=document.getElementById("text");
-document.addEventListener("click",e=>{
-    const bloom=document.createElement("div");
-    bloom.className="bloom";
-    bloom.style.left=e.clientX-60+"px";
-    bloom.style.top=e.clientY-60+"px";
+// DATA MATKUL
+const dbMatkul = [
+    { code: "A02171003", name: "Aljabar Linier", sks: 3, type: "aljabar" },
+    { code: "A02171004", name: "Kalkulus Diferensial", sks: 3, type: "kalkulus" },
+    { code: "A02171015", name: "Geometri", sks: 3, type: "geometri" },
+    { code: "A02171040", name: "Statistika Dasar", sks: 2, type: "statistika" },
+    { code: "U00241008", name: "Bahasa Inggris", sks: 2, type: "inggris" },
+    { code: "A02171002", name: "Teori Bilangan", sks: 3, type: "teori_bilangan" },
+    { code: "A02171039", name: "Logika Matematika", sks: 2, type: "logika" },
+    { code: "A00171001", name: "Pengantar Pendidikan", sks: 2, type: "pendidikan" }
+];
 
-    for(let i=0;i<8;i++){
-        const p=document.createElement("div");
-        p.className="petal";
-        bloom.appendChild(p);
+// TEXT ASSETS
+const sindiranList = [
+    "Aih, bikin malu orang tua di kampung!", "Pulang mako saja tanam jagung, Le.", "Kebanyakan makan burjo ini anak.",
+    "Astagah, begini saja ndak tau? Hapus KRS mi.", "Kosong melompong otak ta' Kanda.",
+    "Belum lunas uang kos mu kah? Kurang fokus ki.", "Weh, sadar diri. Nilai E sudah di depan mata.",
+    "Mending tidur mako kalau begini jawabanmu.", "Kurang minum air galon ini."
+];
+const gombalanList = [
+    "memang andalan gue!", "lulus mako di hatiku.", "calon mantu idaman mama.", 
+    "pintarnya tawwa, auto cumlaude ini.", "meleleh ka liat jawabanmu.", 
+    "traktir dulu Coto, pintar sekali.", "fix, wisuda tahun ini!", "gagah/cantik, pintar lagi."
+];
+const kosQuotes = [
+    "Saldo ATM tinggal kenangan, Indomie jadi harapan.", "Kuliah di Untad, 'Tondo' adalah ujian fisik terberat.",
+    "Nunggu kiriman orang tua lebih deg-degan daripada nunggu nilai keluar.", "Cita-cita lulus cepat, realita semester tua.",
+    "Wi-Fi kampus adalah koentji... kalau tersambung.", "Jauh dari orang tua mengajarkanku arti berhemat.",
+    "Tanggal tua adalah momen di mana promag jadi cemilan.", "Panasnya Palu mengajarkanku untuk selalu tabah."
+];
+
+// --- INIT SYSTEM ---
+function init() {
+    let stored = localStorage.getItem('untadDataV7');
+    if (stored) {
+        userData = JSON.parse(stored);
+        if(!userData.matkulStats) userData.matkulStats = {}; 
+        if (userData.name) {
+            $("loginPage").classList.add("hidden");
+            $("modePage").classList.remove("hidden");
+        }
     }
-    const c=document.createElement("div");
-    c.className="center";
-    bloom.appendChild(c);
+}
+init();
 
-    garden.appendChild(bloom);
-    text.style.opacity=1;
-    setTimeout(()=>text.style.opacity=0,2500);
-    setTimeout(()=>bloom.remove(),5000);
-});
+function saveUser() {
+    let val = $("inputNama").value.trim();
+    if (!val) return alert("Isi nama dulu bosku!");
+    userData.name = val;
+    userData.matkulStats = {}; 
+    saveData();
+    $("loginPage").classList.add("hidden");
+    $("modePage").classList.remove("hidden");
+}
 
-/* 💌 BUCIN */
-function bucin(){
-    const pesan=document.getElementById("pesan");
-    const kalimat=[
-        "Kalau jodoh memang tak akan ke mana, tapi saingannya itu Bro, di mana-mana.",
-        "Kamu itu seperti tisu, pas aku nangis selalu bisa ngelap ingusku.", 
-        "Kamu itu seperti kopi deh. Pahit-pahit, tapi bikin ketagihan.",
-        "Kalau aku udah sayang sama kamu, hujan badai pun aku tetap tidur.",
-        "Hidup segan, mati tak mau. Mantan segan, hati merindu selalu.", 
-        "Aku pura-pura kuat, padahal butuh pijitan mu.",
-        "Aku nggak rela kalau kamu demam, tapi jika aku demam akupun gak rela.", 
-        " Aku rela ditangkap polisi asal pakai motor mu😊.",
-        "Tahu nggak persamaannya kamu dengan soal ujian? sama-sama bikin stresss.", 
-        "Laut kan aku sebrangi, gunung pun akan aku daki, hanya ada di mimpimu saja itu, gk usah ngayal.", 
-        "Tahu gak? Kamu itu manis lo, tapi jangan dingin dong. Nanti ketukar sama sup pare.", 
-        "Bila mencintaimu adalah sebuah ilusi, maka izinkan aku bangun dulu.", 
-        "Waktu pertama kali bertemu kamu, hatiku telah berdetak kencang karna kamu kira maling.", 
-        "Aku mau makan apa aja sama kamu, yg penting gratis.", 
-        "Aku memang pendiam, diam-diam nahan kentut.", 
-        "Kalau tiap ada kamu di sampingku, aku berasa punya malaikat maut.",
-        "Sakit itu ketika cinta yang aku beri tidak kamu hargai.", 
-        "Cinta tapi tak dianggap itu seperti sakit tapi tak berdarah.", 
-        "Aku sayang kamu dengan segenap kemiskinanku.", 
-        "Aku tanpamu bagaikan ambulans tanpa wahyu wahyu wahyu.", 
-        "Aku masih menunggumu, menunggu centang biru yang tak lekas terbalas."
+function selectMode(mode) {
+    currentMode = mode;
+    if (mode === 'hard') {
+        document.body.classList.add('mode-hard');
+        $("modeDisplay").innerText = "MODE SEPUH";
+    } else {
+        document.body.classList.remove('mode-hard');
+        $("modeDisplay").innerText = "MODE SANTUY";
+    }
+    
+    renderKRS(); 
+    $("modePage").classList.add("hidden");
+    $("home").classList.remove("hidden");
+    updateUI();
+    showRandomQuote();
+}
+
+function switchModeWithoutReset() {
+    $("home").classList.add("hidden");
+    $("modePage").classList.remove("hidden");
+}
+
+function showRandomQuote() {
+    let rand = kosQuotes[Math.floor(Math.random() * kosQuotes.length)];
+    $("dailyQuote").innerText = `"${rand}"`;
+}
+
+// FUNGSI UTAMA RENDER KRS + NILAI PER MATKUL
+function renderKRS() {
+    const container = $("matkulList");
+    container.innerHTML = "";
+    
+    dbMatkul.forEach((mk, index) => {
+        let stats = userData.matkulStats[mk.code] || { b: 0, t: 0 };
+        let gradeLetter = "-";
+        let badgeColor = "#555";
+        
+        if (stats.t > 0) {
+            let score = stats.b / stats.t; 
+            gradeLetter = getGradeLetterFromScore(score);
+            badgeColor = getBadgeColor(gradeLetter);
+        }
+
+        let el = document.createElement("div");
+        el.className = "matkul-card";
+        el.onclick = () => startMat(index);
+        
+        el.innerHTML = `
+            <div class="mk-left">
+                <div class="mk-code">${mk.code}</div>
+                <div class="mk-name">${mk.name}</div>
+            </div>
+            <div class="mk-right">
+                <div class="mk-sks">${mk.sks} SKS</div>
+                <div class="mk-grade-badge" style="background:${badgeColor}">${gradeLetter}</div>
+            </div>
+        `;
+        container.appendChild(el);
+    });
+}
+
+function getGradeLetterFromScore(score) {
+    if (score >= 0.80) return "A";
+    if (score >= 0.70) return "B"; 
+    if (score >= 0.55) return "C";
+    if (score >= 0.40) return "D";
+    return "E";
+}
+
+function getBadgeColor(grade) {
+    if(grade === 'A' || grade === 'A-') return "#00c853"; 
+    if(grade.includes('B')) return "#0091ea"; 
+    if(grade.includes('C')) return "#fbc02d"; 
+    if(grade === 'D') return "#ff6d00"; 
+    if(grade === 'E') return "#d50000"; 
+    return "#555"; 
+}
+
+function updateUI() {
+    $("welcomeName").innerText = "Tabe', " + userData.name;
+    let ipk = userData.total === 0 ? 0 : (userData.benar/userData.total)*4.0;
+    $("ipkDisplay").innerText = ipk.toFixed(2);
+    
+    let globalScore = userData.total === 0 ? 0 : userData.benar/userData.total;
+    let globalGrade = userData.total === 0 ? "-" : getGradeLetterFromScore(globalScore);
+    $("gradeDisplay").innerText = globalGrade;
+    $("gradeDisplay").style.color = getBadgeColor(globalGrade);
+}
+
+function saveData() {
+    localStorage.setItem('untadDataV7', JSON.stringify(userData));
+    updateUI();
+}
+
+function backHome() {
+    $("gameArea").classList.add("hidden");
+    $("home").classList.remove("hidden");
+    renderKRS(); 
+    updateUI();
+    showRandomQuote(); 
+}
+
+function resetGame() {
+    if(confirm("Yakin hapus data? Kembali jadi Maba nanti!")) {
+        localStorage.clear();
+        location.reload();
+    }
+}
+
+// --- GAME LOGIC ---
+
+function startMat(index) {
+    currentMatkul = dbMatkul[index];
+    $("home").classList.add("hidden");
+    $("gameArea").classList.remove("hidden");
+    $("gameArea").classList.add("pop-anim");
+    $("matkulName").innerText = currentMatkul.name.toUpperCase();
+    generateQuestion();
+}
+
+function generateQuestion() {
+    isLocked = false;
+    $("ans").value = ""; $("res").innerText = ""; $("solusi-box").style.display = "none";
+    $("btnJawab").innerText = "KUNCI MI (SUBMIT)";
+    $("btnJawab").style.background = currentMode === 'hard' ? "var(--btn-sepuh)" : "var(--btn-santuy)";
+    $("ans").focus();
+
+    let type = currentMatkul.type;
+    let r1 = Math.floor(Math.random() * 10) + 2;
+    let r2 = Math.floor(Math.random() * 10) + 2;
+
+    if(type === 'aljabar') genAljabar(r1, r2);
+    else if(type === 'kalkulus') genKalkulus(r1, r2);
+    else if(type === 'geometri') genGeometri(r1, r2);
+    else if(type === 'statistika') genStatistika(r1, r2);
+    else if(type === 'teori_bilangan') genTeoriBil(r1, r2);
+    else if(type === 'logika') genLogika();
+    else if(type === 'pendidikan') genPendidikan();
+    else genInggris();
+}
+
+// BANK SOAL
+function genAljabar(r1, r2) {
+    if(currentMode === 'normal') {
+        $("q").innerText = `Determinan matriks diagonal 2x2: \n| ${r1}  0 |\n| 0  ${r2} |`;
+        currentQ.a = (r1 * r2).toString();
+        currentQ.s = `Rumusnya ad - bc. Jadi (${r1} x ${r2}) - 0 = ${r1*r2}.`;
+    } else {
+        $("q").innerText = `Trace matriks Identitas 3x3 dikali ${r1}?`;
+        currentQ.a = (r1 * 3).toString();
+        currentQ.s = `Diagonal 1+1+1=3. Dikali ${r1} jadi ${r1*3}.`;
+    }
+}
+function genKalkulus(r1, r2) {
+    if(currentMode === 'normal') {
+        $("q").innerText = `Turunan dari ${r1}x + ${r2} berapa?`;
+        currentQ.a = r1.toString();
+        currentQ.s = "Turunan ax itu a, konstanta jadi 0.";
+    } else {
+        $("q").innerText = `Integral dari ${2*r1}x dx? (Pangkat)`;
+        currentQ.a = `${r1}x^2`;
+        currentQ.s = `Pangkat nambah 1, koefisien dibagi pangkat baru.`;
+    }
+}
+function genGeometri(r1, r2) {
+    if(currentMode === 'normal') {
+        $("q").innerText = `Volume kubus sisi ${r1}?`;
+        currentQ.a = (r1**3).toString();
+        currentQ.s = "Sisi x Sisi x Sisi bosku.";
+    } else {
+        $("q").innerText = `Luas lingkaran r=${r1*7}? (pi=22/7)`;
+        let r = r1*7;
+        currentQ.a = (22/7 * r * r).toString();
+        currentQ.s = "Rumus: Pi kali r kuadrat.";
+    }
+}
+function genStatistika(r1, r2) {
+    if(currentMode === 'normal') {
+        $("q").innerText = `Rata-rata dari 2, 4, 6?`;
+        currentQ.a = "4";
+        currentQ.s = "Jumlah bagi 3. (2+4+6)/3 = 4.";
+    } else {
+        $("q").innerText = `Peluang dadu ganjil? (Desimal)`;
+        currentQ.a = "0.5";
+        currentQ.s = "3 angka dari 6. Jadi 0.5.";
+    }
+}
+function genTeoriBil(r1, r2) {
+    if(currentMode === 'normal') {
+        $("q").innerText = `FPB dari 10 dan 20?`;
+        currentQ.a = "10";
+        currentQ.s = "10 bisa bagi 10 dan 20.";
+    } else {
+        $("q").innerText = `${r1*10 + 3} mod 10 = ?`;
+        currentQ.a = "3";
+        currentQ.s = "Sisa bagi 10 itu angka terakhirnya.";
+    }
+}
+function genLogika() {
+    if(currentMode === 'normal') {
+        $("q").innerText = "Negasi dari 'Hari ini hujan'?";
+        currentQ.a = "hari ini tidak hujan";
+        currentQ.s = "Tinggal tambah 'tidak' ji.";
+    } else {
+        $("q").innerText = "P=Benar, Q=Salah. P AND Q?";
+        currentQ.a = "salah";
+        currentQ.s = "Kalau AND, dua-duanya harus benar.";
+    }
+}
+function genPendidikan() {
+    const soal = [
+        {q: "4 Pilar UNESCO: Learning to Know, Do, Be, dan...?", a: "live together", s: "Learning to live together."},
+        {q: "Semboyan Tut Wuri Handayani dari siapa?", a: "ki hajar dewantara", s: "Bapak Pendidikan Nasional."},
+        {q: "Kurikulum sekarang namanya?", a: "merdeka", s: "Kurikulum Merdeka."},
+        {q: "UU Sisdiknas nomor 20 tahun?", a: "2003", s: "UU No 20 Tahun 2003."},
     ];
-    pesan.innerText=kalimat[Math.floor(Math.random()*kalimat.length)];
+    let rand = soal[Math.floor(Math.random()*soal.length)];
+    $("q").innerText = rand.q;
+    currentQ.a = rand.a;
+    currentQ.s = rand.s;
+}
+function genInggris() {
+    if(currentMode === 'normal') {
+        $("q").innerText = "Inggrisnya 'Perpustakaan'?";
+        currentQ.a = "library";
+        currentQ.s = "Library.";
+    } else {
+        $("q").innerText = "V3 dari 'Write'?";
+        currentQ.a = "written";
+        currentQ.s = "Write - Wrote - Written.";
+    }
+}
+
+// --- CHECK ANSWER (FIX GOMBALAN PAKAI NAMA) ---
+function checkAnswer() {
+    if(isLocked) return;
+    isLocked = true;
+    
+    let userAns = $("ans").value.toLowerCase().trim();
+    let correct = userAns == currentQ.a || (userAns.length > 2 && currentQ.a.includes(userAns));
+    
+    userData.total++;
+    
+    if(!userData.matkulStats) userData.matkulStats = {};
+    if(!userData.matkulStats[currentMatkul.code]) {
+        userData.matkulStats[currentMatkul.code] = { b: 0, t: 0 };
+    }
+    userData.matkulStats[currentMatkul.code].t++;
+
+    if(correct) {
+        userData.benar++;
+        userData.matkulStats[currentMatkul.code].b++; 
+        
+        let randomGombal = gombalanList[Math.floor(Math.random() * gombalanList.length)];
+        // FIX: NAMA USER MUNCUL DISINI
+        let personalPraise = `✨ BENAR! Aih ${userData.name}, ${randomGombal}`;
+        
+        $("res").innerHTML = `<span style="color:#00e676; text-shadow: 0 0 10px rgba(0,230,118,0.5);">${personalPraise}</span>`;
+        spawnParticles('win');
+    } else {
+        let randomSindir = sindiranList[Math.floor(Math.random() * sindiranList.length)];
+        $("res").innerHTML = `<span style="color:#ff3d00; text-shadow: 0 0 10px rgba(255,61,0,0.5);">💀 SALAH! ${randomSindir}</span>`;
+        spawnParticles('lose');
+        $("gameArea").classList.add("shake-anim");
+        setTimeout(()=>$("gameArea").classList.remove("shake-anim"), 400);
+    }
+    
+    $("solusi-box").style.display = "block";
+    $("solusi-text").innerText = `Jawabannya: ${currentQ.a}.\n${currentQ.s}`;
+    saveData(); 
+}
+
+$("ans").addEventListener("keypress", (e)=>{if(e.key==="Enter") checkAnswer()});
+
+function spawnParticles(type) {
+    for(let i=0; i<12; i++) {
+        let el = document.createElement("div");
+        el.className = "flower-particle";
+        el.innerText = type == 'win' ? (currentMode=='hard' ? '🔥':'🌸') : '❌';
+        el.style.left = (window.innerWidth/2 + (Math.random()-0.5)*250) + 'px';
+        el.style.top = (window.innerHeight/2 + (Math.random()-0.5)*250) + 'px';
+        document.body.appendChild(el);
+        setTimeout(()=>el.remove(), 1500);
+    }
 }
 </script>
+</body>
 </html>
