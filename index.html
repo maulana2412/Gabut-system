@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-<title>SIGA-8: ANAK KOS EDITION (FULL GRADES)</title>
+<title>SIGA-8: UNTAD GABUT EDITIO</title>
 <style>
 /* =========================================
    1. CORE STYLES & VARIABLES
@@ -132,10 +132,7 @@ body.mode-hard button { background: var(--btn-sepuh); }
 .mk-name { font-size: 15px; font-weight: bold; color: #fff; }
 .mk-right { text-align: right; width: 35%; display: flex; flex-direction: column; align-items: flex-end; gap: 5px; }
 
-/* BADGE NILAI PER MATKUL */
-.mk-sks { 
-    font-size: 11px; color: #aaa; margin-bottom: 2px;
-}
+.mk-sks { font-size: 11px; color: #aaa; margin-bottom: 2px; }
 .mk-grade-badge {
     background: #444; color: #fff; padding: 4px 10px; border-radius: 6px; 
     font-size: 14px; font-weight: 900; box-shadow: 0 2px 5px rgba(0,0,0,0.3);
@@ -156,7 +153,15 @@ body.mode-hard button { background: var(--btn-sepuh); }
     font-size: 18px; color: #ffd700; text-shadow: 0 0 5px rgba(255, 215, 0, 0.6);
 }
 
-#q { font-size: 1.2rem; font-weight: bold; min-height: 100px; display: flex; align-items: center; justify-content: center; text-align: center; margin-bottom: 25px; line-height: 1.4; text-shadow: 0 2px 4px rgba(0,0,0,0.5); }
+/* CSS UNTUK SOAL (FIX PANGKAT & SPACING) */
+#q { 
+    font-size: 1.2rem; font-weight: bold; min-height: 100px; 
+    display: flex; flex-direction: column; align-items: center; justify-content: center; 
+    text-align: center; margin-bottom: 25px; line-height: 1.5; 
+    text-shadow: 0 2px 4px rgba(0,0,0,0.5); 
+}
+/* Sup tag untuk pangkat */
+sup { font-size: 0.7em; vertical-align: super; color: #ffd700; margin-left: 1px; }
 
 #solusi-box {
     display: none; margin-top: 20px; background: rgba(255,255,255,0.1); 
@@ -165,7 +170,6 @@ body.mode-hard button { background: var(--btn-sepuh); }
     line-height: 1.5; color: #e0e0e0;
 }
 
-/* QUOTE BOX BARU */
 .quote-box {
     margin-bottom: 20px; padding: 15px;
     background: rgba(255, 255, 255, 0.05);
@@ -179,14 +183,14 @@ body.mode-hard button { background: var(--btn-sepuh); }
 
 <div class="top-banner">✨ ANAK UNTAD PEJUANG KOS ✨</div>
 <div class="watermark-hdm">H.D.M</div>
-<header>TES KEGABUTAN</header>
+<header>GAME GABUT</header>
 
 <div class="container pop-anim" id="loginPage">
     <div class="glass-card" style="margin-top:30px;">
-        <h2 style="margin-bottom: 10px; color:#ffd700;">TABE', ABSEN DULU</h2>
-        <p style="font-size:13px; opacity:0.8; margin-bottom:25px;">Kasih masuk nama panggilan dulu sayang.</p>
-        <input type="text" id="inputNama" placeholder="Nama ta' siapa?">
-        <button onclick="saveUser()">jangan di pencet</button>
+        <h2 style="margin-bottom: 10px; color:#ffd700;">MASUKKI DULU SAYANG</h2>
+        <p style="font-size:13px; opacity:0.8; margin-bottom:25px;">Tulis nama ta' di sini, biar enak ku panggil sayang.</p>
+        <input type="text" id="inputNama" placeholder="Nama ta' siapa, Sayang?">
+        <button onclick="saveUser()"> jangan di klik</button>
     </div>
 </div>
 
@@ -199,7 +203,7 @@ body.mode-hard button { background: var(--btn-sepuh); }
 <div class="container hidden" id="home">
     <div id="stats-bar" class="glass-card" style="padding: 15px; margin-bottom: 15px;">
         <div style="text-align:left">
-            <span id="welcomeName" style="display:block; font-weight:900; font-size:16px;">Halo, User</span>
+            <span id="welcomeName" style="display:block; font-weight:900; font-size:16px;">Halo Sayang, User</span>
             <span id="modeDisplay" style="font-size:11px; opacity:0.7; letter-spacing:1px;">MODE</span>
         </div>
         <div class="ipk-badge">
@@ -215,12 +219,12 @@ body.mode-hard button { background: var(--btn-sepuh); }
         <span id="dailyQuote">"Tunggu sebentar..."</span>
     </div>
 
-    <h4 style="margin-bottom:15px; padding-left: 5px; opacity: 0.9; font-size: 13px; letter-spacing: 1px;">KRS & HASIL STUDINYA SAYAG:</h4>
+    <h4 style="margin-bottom:15px; padding-left: 5px; opacity: 0.9; font-size: 13px; letter-spacing: 1px;">KRS & HASIL STUDI TA':</h4>
     
     <div class="krs-grid" id="matkulList"></div>
     
     <div style="margin-top:30px; display:flex; flex-direction:column; gap:10px;">
-        <button class="btn-mode" onclick="switchModeWithoutReset()">🔀 Ganti Level Dulu</button>
+        <button class="btn-mode" onclick="switchModeWithoutReset()">🔀 Ganti Level Dulu Sayang</button>
         <button class="btn-danger" onclick="resetGame()">🗑️ Ulang Dari Awal (Reset)</button>
     </div>
 </div>
@@ -244,7 +248,7 @@ body.mode-hard button { background: var(--btn-sepuh); }
     </div>
 
     <button onclick="checkAnswer()" id="btnJawab" style="margin-top: 10px;">KUNCI MI (SUBMIT)</button>
-    <button style="background:rgba(0,0,0,0.4); border: 1px solid #555; color:#aaa;" onclick="generateQuestion()" id="btnSkip">SKIP MI DULU</button>
+    <button style="background:rgba(0,0,0,0.4); border: 1px solid #555; color:#aaa;" onclick="generateQuestion()" id="btnSkip">SKIP SAYANG</button>
 </div>
 
 <script>
@@ -260,17 +264,16 @@ let isLocked = false;
 
 // DATA MATKUL
 const dbMatkul = [
-    { code: "A02171003", name: "Aljabar Linier", sks: 3, type: "aljabar" },
-    { code: "A02171004", name: "Kalkulus Diferensial", sks: 3, type: "kalkulus" },
-    { code: "A02171015", name: "Geometri", sks: 3, type: "geometri" },
-    { code: "A02171040", name: "Statistika Dasar", sks: 2, type: "statistika" },
-    { code: "U00241008", name: "Bahasa Inggris", sks: 2, type: "inggris" },
-    { code: "A02171002", name: "Teori Bilangan", sks: 3, type: "teori_bilangan" },
-    { code: "A02171039", name: "Logika Matematika", sks: 2, type: "logika" },
-    { code: "A00171001", name: "Pengantar Pendidikan", sks: 2, type: "pendidikan" }
+    { code: "bikin pusing", name: "Aljabar Linier", sks: 3, type: "aljabar" },
+    { code: "stress ngana", name: "Kalkulus Diferensial", sks: 3, type: "kalkulus" },
+    { code: "harus kuat menghafal", name: "Geometri", sks: 3, type: "geometri" },
+    { code: "hitung uang", name: "Statistika Dasar", sks: 2, type: "statistika" },
+    { code: "bahasa alien", name: "Bahasa Inggris", sks: 2, type: "inggris" },
+    { code: "gampang kok.kayaknya sih", name: "Teori Bilangan", sks: 3, type: "teori_bilangan" },
+    { code: "pikirkan secara logika", name: "Logika Matematika", sks: 2, type: "logika" },
+    { code: "santuy aja mah", name: "Pengantar Pendidikan", sks: 2, type: "pendidikan" }
 ];
 
-// TEXT ASSETS
 const sindiranList = [
     "Aih, bikin malu orang tua di kampung!", "Pulang mako saja tanam jagung, Le.", "Kebanyakan makan burjo ini anak.",
     "Astagah, begini saja ndak tau? Hapus KRS mi.", "Kosong melompong otak ta' Kanda.",
@@ -289,9 +292,8 @@ const kosQuotes = [
     "Tanggal tua adalah momen di mana promag jadi cemilan.", "Panasnya Palu mengajarkanku untuk selalu tabah."
 ];
 
-// --- INIT SYSTEM ---
 function init() {
-    let stored = localStorage.getItem('untadDataV7');
+    let stored = localStorage.getItem('untadDataV8');
     if (stored) {
         userData = JSON.parse(stored);
         if(!userData.matkulStats) userData.matkulStats = {}; 
@@ -322,7 +324,6 @@ function selectMode(mode) {
         document.body.classList.remove('mode-hard');
         $("modeDisplay").innerText = "MODE SANTUY";
     }
-    
     renderKRS(); 
     $("modePage").classList.add("hidden");
     $("home").classList.remove("hidden");
@@ -340,11 +341,9 @@ function showRandomQuote() {
     $("dailyQuote").innerText = `"${rand}"`;
 }
 
-// FUNGSI UTAMA RENDER KRS + NILAI PER MATKUL
 function renderKRS() {
     const container = $("matkulList");
     container.innerHTML = "";
-    
     dbMatkul.forEach((mk, index) => {
         let stats = userData.matkulStats[mk.code] || { b: 0, t: 0 };
         let gradeLetter = "-";
@@ -359,7 +358,6 @@ function renderKRS() {
         let el = document.createElement("div");
         el.className = "matkul-card";
         el.onclick = () => startMat(index);
-        
         el.innerHTML = `
             <div class="mk-left">
                 <div class="mk-code">${mk.code}</div>
@@ -392,10 +390,11 @@ function getBadgeColor(grade) {
 }
 
 function updateUI() {
-    $("welcomeName").innerText = "Tabe', " + userData.name;
+    // UPDATE SINI: PANGGIL SAYANG
+    $("welcomeName").innerText = "Halo Sayang, " + userData.name + " ❤️";
+    
     let ipk = userData.total === 0 ? 0 : (userData.benar/userData.total)*4.0;
     $("ipkDisplay").innerText = ipk.toFixed(2);
-    
     let globalScore = userData.total === 0 ? 0 : userData.benar/userData.total;
     let globalGrade = userData.total === 0 ? "-" : getGradeLetterFromScore(globalScore);
     $("gradeDisplay").innerText = globalGrade;
@@ -403,7 +402,7 @@ function updateUI() {
 }
 
 function saveData() {
-    localStorage.setItem('untadDataV7', JSON.stringify(userData));
+    localStorage.setItem('untadDataV8', JSON.stringify(userData));
     updateUI();
 }
 
@@ -441,87 +440,116 @@ function generateQuestion() {
     $("ans").focus();
 
     let type = currentMatkul.type;
-    let r1 = Math.floor(Math.random() * 10) + 2;
-    let r2 = Math.floor(Math.random() * 10) + 2;
+    let r1 = Math.floor(Math.random() * 8) + 2; 
+    let r2 = Math.floor(Math.random() * 8) + 2;
 
     if(type === 'aljabar') genAljabar(r1, r2);
     else if(type === 'kalkulus') genKalkulus(r1, r2);
     else if(type === 'geometri') genGeometri(r1, r2);
     else if(type === 'statistika') genStatistika(r1, r2);
-    else if(type === 'teori_bilangan') genTeoriBil(r1, r2);
+    else if(type === 'teori_bilangan') genTeoriBil(r1, r2); 
     else if(type === 'logika') genLogika();
     else if(type === 'pendidikan') genPendidikan();
     else genInggris();
 }
 
-// BANK SOAL
+// --- BANK SOAL DIPERBAIKI (MENGGUNAKAN HTML UNTUK PANGKAT/MATRIKS) ---
+
 function genAljabar(r1, r2) {
     if(currentMode === 'normal') {
-        $("q").innerText = `Determinan matriks diagonal 2x2: \n| ${r1}  0 |\n| 0  ${r2} |`;
+        $("q").innerHTML = `Determinan matriks diagonal:<br>| ${r1} &nbsp; 0 |<br>| 0 &nbsp; ${r2} |`;
         currentQ.a = (r1 * r2).toString();
         currentQ.s = `Rumusnya ad - bc. Jadi (${r1} x ${r2}) - 0 = ${r1*r2}.`;
     } else {
-        $("q").innerText = `Trace matriks Identitas 3x3 dikali ${r1}?`;
-        currentQ.a = (r1 * 3).toString();
-        currentQ.s = `Diagonal 1+1+1=3. Dikali ${r1} jadi ${r1*3}.`;
+        $("q").innerHTML = `Trace (jumlah diagonal) matriks:<br>| ${r1} &nbsp; 5 |<br>| 2 &nbsp; ${r1} |`;
+        currentQ.a = (r1 + r1).toString();
+        currentQ.s = `Jumlahkan diagonal utama: ${r1} + ${r1} = ${r1+r1}.`;
     }
 }
+
 function genKalkulus(r1, r2) {
     if(currentMode === 'normal') {
-        $("q").innerText = `Turunan dari ${r1}x + ${r2} berapa?`;
+        $("q").innerHTML = `Turunan dari:<br> f(x) = ${r1}x + ${r2}`;
         currentQ.a = r1.toString();
         currentQ.s = "Turunan ax itu a, konstanta jadi 0.";
     } else {
-        $("q").innerText = `Integral dari ${2*r1}x dx? (Pangkat)`;
+        // FIX PANGKAT MENGGUNAKAN SUP PADA SOAL & JAWABAN
+        let koef = r1 * 2;
+        $("q").innerHTML = `Integral dari:<br> ∫ ${koef}x dx = ... + C`;
         currentQ.a = `${r1}x^2`;
-        currentQ.s = `Pangkat nambah 1, koefisien dibagi pangkat baru.`;
+        currentQ.s = `Pangkat x jadi 2, koefisien dibagi 2.<br>${koef}/2 = ${r1}. Jadi <b>${r1}x<sup>2</sup></b>`;
     }
 }
+
 function genGeometri(r1, r2) {
     if(currentMode === 'normal') {
-        $("q").innerText = `Volume kubus sisi ${r1}?`;
+        // FIX PANGKAT DENGAN SUP
+        $("q").innerHTML = `Volume kubus dengan sisi ${r1} cm?`;
         currentQ.a = (r1**3).toString();
-        currentQ.s = "Sisi x Sisi x Sisi bosku.";
+        currentQ.s = `Sisi x Sisi x Sisi = ${r1} x ${r1} x ${r1} = <b>${r1**3} cm<sup>3</sup></b>.`;
     } else {
-        $("q").innerText = `Luas lingkaran r=${r1*7}? (pi=22/7)`;
+        $("q").innerHTML = `Luas lingkaran jika jari-jari r=${r1*7}?<br>(π = 22/7)`;
         let r = r1*7;
         currentQ.a = (22/7 * r * r).toString();
-        currentQ.s = "Rumus: Pi kali r kuadrat.";
+        currentQ.s = `Rumus: π.r² = 22/7 x ${r} x ${r} = <b>${22/7*r*r} cm<sup>2</sup></b>`;
     }
 }
+
 function genStatistika(r1, r2) {
+    let d1 = r1, d2 = r1 + r2, d3 = r1 + r2 + r2;
+    let mean = (d1+d2+d3)/3;
     if(currentMode === 'normal') {
-        $("q").innerText = `Rata-rata dari 2, 4, 6?`;
-        currentQ.a = "4";
-        currentQ.s = "Jumlah bagi 3. (2+4+6)/3 = 4.";
+        $("q").innerHTML = `Rata-rata (Mean) dari data:<br>${d1}, ${d2}, ${d3}?`;
+        currentQ.a = mean.toString();
+        currentQ.s = `(${d1}+${d2}+${d3}) / 3 = ${mean}.`;
     } else {
-        $("q").innerText = `Peluang dadu ganjil? (Desimal)`;
+        $("q").innerHTML = `Peluang muncul angka Ganjil pada dadu? (Desimal)`;
         currentQ.a = "0.5";
-        currentQ.s = "3 angka dari 6. Jadi 0.5.";
+        currentQ.s = "Angka ganjil (1,3,5) ada 3. Total 6. 3/6 = 0.5";
     }
 }
-function genTeoriBil(r1, r2) {
+
+function genTeoriBil(unused1, unused2) {
+    let n1 = Math.floor(Math.random() * 50) + 10; 
+    let n2 = Math.floor(Math.random() * 9) + 2; 
+
     if(currentMode === 'normal') {
-        $("q").innerText = `FPB dari 10 dan 20?`;
-        currentQ.a = "10";
-        currentQ.s = "10 bisa bagi 10 dan 20.";
+        let pembagi = 10; 
+        if(Math.random() > 0.5) pembagi = 5;
+        let sisa = n1 % pembagi;
+        $("q").innerHTML = `Sisa bagi (Mod) dari:<br>${n1} mod ${pembagi} = ?`;
+        currentQ.a = sisa.toString();
+        currentQ.s = `${n1} dibagi ${pembagi} sisanya adalah <b>${sisa}</b>.`;
     } else {
-        $("q").innerText = `${r1*10 + 3} mod 10 = ?`;
-        currentQ.a = "3";
-        currentQ.s = "Sisa bagi 10 itu angka terakhirnya.";
+        let k = Math.floor(Math.random() * 4) + 2; 
+        let a = n2 * k; 
+        let b = (n2 + 3) * k; 
+        const gcd = (x, y) => !y ? x : gcd(y, x % y);
+        let hasil = gcd(a, b);
+        $("q").innerHTML = `FPB dari bilangan:<br>${a} dan ${b} ?`;
+        currentQ.a = hasil.toString();
+        currentQ.s = `Faktor persekutuan terbesar mereka adalah <b>${hasil}</b>.`;
     }
 }
+
 function genLogika() {
     if(currentMode === 'normal') {
-        $("q").innerText = "Negasi dari 'Hari ini hujan'?";
-        currentQ.a = "hari ini tidak hujan";
-        currentQ.s = "Tinggal tambah 'tidak' ji.";
+        const statements = [
+            {q: "Negasi dari 'Hari ini hujan'", a: "hari ini tidak hujan"},
+            {q: "Negasi dari 'Semua mahasiswa lulus'", a: "ada mahasiswa tidak lulus"},
+            {q: "Konjungsi (AND) bernilai Benar jika...", a: "keduanya benar"}
+        ];
+        let rand = statements[Math.floor(Math.random()*statements.length)];
+        $("q").innerHTML = rand.q + "?";
+        currentQ.a = rand.a;
+        currentQ.s = "Logika dasar bosku.";
     } else {
-        $("q").innerText = "P=Benar, Q=Salah. P AND Q?";
+        $("q").innerHTML = "Jika P=Benar, Q=Salah.<br>Nilai kebenaran (P -> Q)?";
         currentQ.a = "salah";
-        currentQ.s = "Kalau AND, dua-duanya harus benar.";
+        currentQ.s = "Implikasi (->) hanya salah jika Awal Benar, Akhir Salah.";
     }
 }
+
 function genPendidikan() {
     const soal = [
         {q: "4 Pilar UNESCO: Learning to Know, Do, Be, dan...?", a: "live together", s: "Learning to live together."},
@@ -530,29 +558,36 @@ function genPendidikan() {
         {q: "UU Sisdiknas nomor 20 tahun?", a: "2003", s: "UU No 20 Tahun 2003."},
     ];
     let rand = soal[Math.floor(Math.random()*soal.length)];
-    $("q").innerText = rand.q;
+    $("q").innerHTML = rand.q;
     currentQ.a = rand.a;
     currentQ.s = rand.s;
 }
+
 function genInggris() {
     if(currentMode === 'normal') {
-        $("q").innerText = "Inggrisnya 'Perpustakaan'?";
-        currentQ.a = "library";
-        currentQ.s = "Library.";
+        const vocab = [
+            {q: "Perpustakaan", a: "library"}, {q: "Universitas", a: "university"},
+            {q: "Mahasiswa", a: "student"}, {q: "Dosen", a: "lecturer"}
+        ];
+        let rand = vocab[Math.floor(Math.random()*vocab.length)];
+        $("q").innerHTML = `Bahasa Inggrisnya:<br>"${rand.q}" ?`;
+        currentQ.a = rand.a;
+        currentQ.s = rand.a;
     } else {
-        $("q").innerText = "V3 dari 'Write'?";
-        currentQ.a = "written";
-        currentQ.s = "Write - Wrote - Written.";
+        $("q").innerHTML = "V3 (Past Participle) dari kata:<br>'Go'?";
+        currentQ.a = "gone";
+        currentQ.s = "Go - Went - Gone.";
     }
 }
 
-// --- CHECK ANSWER (FIX GOMBALAN PAKAI NAMA) ---
+// --- CHECK ANSWER (DENGAN NAMA DI GOMBALAN) ---
 function checkAnswer() {
     if(isLocked) return;
     isLocked = true;
     
     let userAns = $("ans").value.toLowerCase().trim();
-    let correct = userAns == currentQ.a || (userAns.length > 2 && currentQ.a.includes(userAns));
+    // Cek jawaban
+    let correct = userAns == currentQ.a || (userAns.length > 3 && currentQ.a.includes(userAns));
     
     userData.total++;
     
@@ -567,7 +602,7 @@ function checkAnswer() {
         userData.matkulStats[currentMatkul.code].b++; 
         
         let randomGombal = gombalanList[Math.floor(Math.random() * gombalanList.length)];
-        // FIX: NAMA USER MUNCUL DISINI
+        // GOMBALAN PAKAI NAMA
         let personalPraise = `✨ BENAR! Aih ${userData.name}, ${randomGombal}`;
         
         $("res").innerHTML = `<span style="color:#00e676; text-shadow: 0 0 10px rgba(0,230,118,0.5);">${personalPraise}</span>`;
@@ -581,7 +616,7 @@ function checkAnswer() {
     }
     
     $("solusi-box").style.display = "block";
-    $("solusi-text").innerText = `Jawabannya: ${currentQ.a}.\n${currentQ.s}`;
+    $("solusi-text").innerHTML = `Jawabannya: <b>${currentQ.a}</b>.<br>${currentQ.s}`;
     saveData(); 
 }
 
@@ -591,7 +626,7 @@ function spawnParticles(type) {
     for(let i=0; i<12; i++) {
         let el = document.createElement("div");
         el.className = "flower-particle";
-        el.innerText = type == 'win' ? (currentMode=='hard' ? '🔥':'🌸') : '❌';
+        el.innerText = type == 'win' ? (currentMode=='hard' ? '🔥':'❤️') : '💔'; // Hati Pecah kalau salah
         el.style.left = (window.innerWidth/2 + (Math.random()-0.5)*250) + 'px';
         el.style.top = (window.innerHeight/2 + (Math.random()-0.5)*250) + 'px';
         document.body.appendChild(el);
