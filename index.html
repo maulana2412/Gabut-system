@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-<title>SIGA-8: UNTAD GABUT BLOOM EDITION</title>
+<title>MATEMATIKA GABUT</title>
 <style>
 /* =========================================
    1. CORE STYLES & VARIABLES
@@ -32,13 +32,13 @@ body {
     padding-bottom: 60px;
     /* Kursor custom lucu */
     cursor: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" style="fill:white"><circle cx="10" cy="10" r="5"/></svg>'), auto;
-    text-align: center; /* Memastikan semua konten cenderung ke tengah */
+    text-align: center;
 }
 
 body.mode-hard { background: var(--bg-sepuh); }
 
 /* =========================================
-   2. ANIMATION & PARTICLES (NEW & FUNNY)
+   2. ANIMATION & PARTICLES
    ========================================= */
 .watermark-hdm {
     position: fixed; top: 15px; right: 20px; font-family: monospace; font-weight: 900;
@@ -54,11 +54,9 @@ body.mode-hard { background: var(--bg-sepuh); }
     75% { transform: rotate(1deg) skew(1deg); }
     100% { transform: rotate(0deg) skew(0deg); }
 }
-/* PERBAIKAN DI SINI: Menghapus display: inline-block agar tetap di tengah */
 .funny-anim { 
     animation: drunk 3s infinite ease-in-out; 
-    /* display: inline-block; <--- INI DIHAPUS */
-    margin: 0 auto; /* Memastikan elemen blok di tengah */
+    margin: 0 auto;
 }
 
 @keyframes shake { 0%, 100% { transform: translateX(0); } 25% { transform: translateX(-10px); } 75% { transform: translateX(10px); } }
@@ -67,7 +65,7 @@ body.mode-hard { background: var(--bg-sepuh); }
 @keyframes popUp { 0% { transform: scale(0.95); opacity: 0; } 100% { transform: scale(1); opacity: 1; } }
 .pop-anim { animation: popUp 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275); }
 
-/* Animasi Bunga Mekar (Bloom) */
+/* Animasi Bunga Mekar saat klik (Bloom) */
 @keyframes bloomIn {
     0% { transform: scale(0) rotate(0deg); opacity: 0; }
     50% { opacity: 1; }
@@ -75,19 +73,40 @@ body.mode-hard { background: var(--bg-sepuh); }
 }
 
 .bloom-flower {
-    position: fixed;
-    pointer-events: none;
-    z-index: 99999;
-    width: 60px;
-    height: 60px;
+    position: fixed; pointer-events: none; z-index: 99999;
+    width: 60px; height: 60px;
     animation: bloomIn 1s forwards ease-out;
+}
+
+/* BARU: CSS UNTUK HUJAN BUNGA & MATEMATIKA */
+#rain-container {
+    position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+    pointer-events: none; /* Agar tidak menghalangi klik */
+    z-index: 1; /* Di belakang konten utama (z-index: 2) */
+    overflow: hidden;
+}
+
+.rain-particle {
+    position: absolute;
+    top: -50px; /* Mulai dari atas layar */
+    color: rgba(255,255,255,0.4); /* Putih transparan */
+    text-shadow: 0 0 5px rgba(255,255,255,0.3);
+    animation: fall linear forwards; /* Animasi jatuh */
+}
+
+@keyframes fall {
+    to {
+        transform: translateY(110vh) rotate(360deg); /* Jatuh sampai bawah dan berputar */
+    }
 }
 
 /* =========================================
    3. LAYOUT & GLASSMORPHISM COMPONENTS
    ========================================= */
 .container { 
-    padding: 20px; max-width: 550px; margin: 0 auto; position: relative; z-index: 2; text-align: left;
+    padding: 20px; max-width: 550px; margin: 0 auto; position: relative; 
+    z-index: 2; /* Konten utama di depan hujan */
+    text-align: left;
 }
 
 .hidden { display: none !important; }
@@ -98,7 +117,7 @@ body.mode-hard { background: var(--bg-sepuh); }
     text-align: center; font-size: 14px; font-weight: bold; color: #ffd700;
     padding: 15px 0 5px 0; letter-spacing: 1.5px; text-shadow: 0 2px 5px rgba(0,0,0,0.5);
     border-bottom: 1px solid rgba(255,255,255,0.1); margin-bottom: 10px;
-    width: 100%; /* Memastikan lebar penuh */
+    width: 100%;
 }
 
 header {
@@ -107,7 +126,7 @@ header {
     background: linear-gradient(to bottom, #fff, #e0e0e0); 
     -webkit-background-clip: text; -webkit-text-fill-color: transparent;
     margin-bottom: 10px; filter: drop-shadow(0 2px 4px rgba(0,0,0,0.3));
-    width: 100%; /* Memastikan lebar penuh */
+    width: 100%;
 }
 
 /* GLASS CARD STYLE */
@@ -186,7 +205,7 @@ body.mode-hard button { background: var(--btn-sepuh); }
     display: flex; flex-direction: column; align-items: center; justify-content: center; 
     text-align: center; margin-bottom: 25px; line-height: 1.5; 
     text-shadow: 0 2px 4px rgba(0,0,0,0.5); 
-    width: 100%; /* Pastikan soal juga full width */
+    width: 100%;
 }
 sup { font-size: 0.7em; vertical-align: super; color: #ffd700; margin-left: 1px; }
 
@@ -207,6 +226,8 @@ sup { font-size: 0.7em; vertical-align: super; color: #ffd700; margin-left: 1px;
 </style>
 </head>
 <body>
+
+<div id="rain-container"></div>
 
 <div class="top-banner funny-anim">✨ ANAK UNTAD PEJUANG KOS ✨</div>
 <div class="watermark-hdm">H.D.M</div>
@@ -280,7 +301,41 @@ sup { font-size: 0.7em; vertical-align: super; color: #ffd700; margin-left: 1px;
 
 <script>
 /* =========================================
-   FLOWER & ANIMATION ENGINE
+   BARU: RAIN ANIMATION ENGINE (BUNGA & MATH)
+   ========================================= */
+const rainSymbols = ['🌸', '🌺', '🌷', '🌹', '🌻', '∑', '∫', 'π', '√', '∞', '≠', '±', '÷', '×', '≈'];
+const rainContainer = document.getElementById('rain-container');
+
+function createRainParticle() {
+    const el = document.createElement('div');
+    el.classList.add('rain-particle');
+    // Pilih simbol acak
+    el.innerText = rainSymbols[Math.floor(Math.random() * rainSymbols.length)];
+    
+    // Posisi horizontal acak
+    el.style.left = Math.random() * 100 + 'vw';
+    
+    // Durasi jatuh acak (antara 5s sampai 15s) agar variatif
+    const duration = Math.random() * 10 + 5; 
+    el.style.animationDuration = duration + 's';
+    
+    // Ukuran acak agar ada kesan kedalaman
+    el.style.fontSize = (Math.random() * 20 + 10) + 'px';
+
+    rainContainer.appendChild(el);
+
+    // Hapus elemen setelah animasi selesai agar tidak menumpuk di memori
+    setTimeout(() => {
+        el.remove();
+    }, duration * 1000);
+}
+
+// Mulai hujan! Membuat partikel baru setiap 300ms
+setInterval(createRainParticle, 300);
+
+
+/* =========================================
+   FLOWER BLOOM ON CLICK ENGINE
    ========================================= */
 
 // Fungsi untuk membuat bunga mekar di posisi tertentu dengan warna tertentu
