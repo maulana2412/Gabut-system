@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-<title>MATEMATIKA GABUT</title>
+<title>MATEMATIKA GABUT & BUCIN</title>
 <style>
 /* =========================================
    1. CORE STYLES & VARIABLES
@@ -193,7 +193,7 @@ sup { font-size: 0.7em; vertical-align: super; color: #ffd700; margin-left: 1px;
 
 <div class="top-banner funny-anim">✨ ANAK UNTAD PEJUANG KOS ✨</div>
 <div class="watermark-hdm">H.D.M</div>
-<header class="funny-anim" style="animation-delay: 1s;">GAME GABUT</header>
+<header class="funny-anim" style="animation-delay: 1s;">GAME BUCIN GABUT</header>
 
 <div class="container pop-anim" id="loginPage">
     <div class="glass-card" style="margin-top:30px; text-align:center;">
@@ -265,7 +265,7 @@ sup { font-size: 0.7em; vertical-align: super; color: #ffd700; margin-left: 1px;
 /* =========================================
    ANIMATION ENGINES
    ========================================= */
-const rainSymbols = ['🌸', '🌺', '🌷', '∑', '∫', 'π', '√', '∞', '≠', '÷', '×'];
+const rainSymbols = ['🌸', '🌺', '🌷', '∑', '∫', 'π', '√', '∞', '≠', '÷', '×', '❤️'];
 const rainContainer = document.getElementById('rain-container');
 
 function createRainParticle() {
@@ -331,7 +331,7 @@ let currentMatkul = {};
 let currentQ = { a: "", s: [] }; 
 let isLocked = false;
 
-// DATABASE MATKUL (ID Disesuaikan dengan Logic Lama)
+// DATABASE MATKUL
 const dbMatkul = [
     { type: 'math',  code: "bikin pusing", name: "Aljabar Linier", sks: 3 },
     { type: 'calc',  code: "stress ngana", name: "Kalkulus Dasar", sks: 3 },
@@ -342,17 +342,36 @@ const dbMatkul = [
     { type: 'edu',   code: "calon guru", name: "Ilmu Pendidikan", sks: 2 }
 ];
 
+/* =========================================
+   LIST KATA-KATA (BUCIN & EJEKAN) - DIEDIT DISINI
+   ========================================= */
 const sindiranList = [
-    "Aih, bikin malu orang tua di kampung!", "Pulang mako saja tanam jagung, Le.", "Kebanyakan makan burjo ini anak.",
-    "Astagah, begini saja ndak tau? Hapus KRS mi.", "Kosong melompong otak ta' Kanda.",
-    "Belum lunas uang kos mu kah? Kurang fokus ki.", "Weh, sadar diri. Nilai E sudah di depan mata.",
-    "Mending tidur mako kalau begini jawabanmu.", "Kurang minum air galon ini."
+    "Aih, bikin malu orang tua di kampung!", 
+    "Pulang mako saja tanam jagung, Le.", 
+    "Kebanyakan makan burjo ini anak.",
+    "Astagah, begini saja ndak tau? Hapus KRS mi.", 
+    "Kosong melompong otak ta' Kanda.",
+    "Belum lunas uang kos mu kah? Kurang fokus ki.", 
+    "Weh, sadar diri. Nilai E sudah di depan mata.",
+    "Mending tidur mako kalau begini jawabanmu.", 
+    "Kurang minum air galon ini.",
+    "Hadeh, beban keluarga betul."
 ];
+
+// LIST BUCIN - DITAMBAHKAN NAMA NANTI DI FUNGSI CHECK
 const gombalanList = [
-    "memang andalan gue!", "mantap mentong kanda!", "calon mantu idaman mama.", 
-    "pintarnya tawwa, auto cumlaude ini.", "ngeri, suhu turun gunung.", 
-    "traktir dulu Coto, pintar sekali.", "fix, wisuda tahun ini!", "gagah/cantik, pintar lagi."
+    "Duh, meleleh aku liat pintarmu", 
+    "Makin sayang deh sama", 
+    "Fix, kamu idaman banget", 
+    "Senyummu seindah jawabanmu", 
+    "I love you 3000", 
+    "Ugh, damagenya ngeri sayangku", 
+    "Mau nggak jadi pacarku",
+    "Otakmu seksi sekali",
+    "Jantungku berdegup kencang liat",
+    "Kamu emang andalan hatiku"
 ];
+
 const kosQuotes = [
     "Saldo ATM tinggal kenangan, Indomie jadi harapan.", "Kuliah di Untad, 'Tondo' adalah ujian fisik terberat.",
     "Nunggu kiriman orang tua lebih deg-degan daripada nunggu nilai keluar.", "Cita-cita lulus cepat, realita semester tua.",
@@ -458,9 +477,7 @@ function getBadgeColor(grade) {
 }
 
 function updateUI() {
-    // === BAGIAN YANG DIUBAH (SAPAAN) ===
     $("welcomeName").innerText = "HALO SAYANG KU " + userData.name;
-    // ===================================
     
     let ipk = userData.total === 0 ? 0 : (userData.benar/userData.total)*4.0;
     $("ipkDisplay").innerText = ipk.toFixed(2);
@@ -521,19 +538,14 @@ function generateQuestion() {
         'edu': genPendidikan
     };
     
-    // Generate raw question object
     let rawQ = generators[currentMatkul.type]();
-    
-    // Update UI text
     $("q").innerHTML = rawQ.text;
-    
-    // Store logic
     currentQ.a = rawQ.ans;
     currentQ.s = rawQ.steps;
 }
 
 /* =========================================
-   SOAL - SOAL (DARI VERSI SEBELUMNYA)
+   SOAL - SOAL 
    ========================================= */
 
 /* --- 1. ALJABAR LINIER (MATRIX & VEKTOR) --- */
@@ -701,7 +713,6 @@ function checkAnswer() {
     let isCorrect = false;
     let key = currentQ.a;
 
-    // Support multiple answers (array) or single string
     if(Array.isArray(key)) {
         isCorrect = key.some(k => userAns.includes(String(k).toLowerCase()));
     } else {
@@ -721,10 +732,12 @@ function checkAnswer() {
         userData.benar++;
         userData.matkulStats[currentMatkul.type].b++; 
         
+        // LOGIC BUCIN + NAMA DI SINI
         let randomGombal = gombalanList[rand(0, gombalanList.length-1)];
-        $("res").innerHTML = `<span style="color:#e040fb; text-shadow: 0 0 10px rgba(224,64,251,0.5);">✨ BENAR! ${randomGombal}</span>`;
+        $("res").innerHTML = `<span style="color:#e040fb; text-shadow: 0 0 10px rgba(224,64,251,0.5);">✨ BENAR! ${randomGombal} ${userData.name} 😍</span>`;
         triggerFlowerExplosion('purple');
     } else {
+        // LOGIC EJEKAN DI SINI
         let randomSindir = sindiranList[rand(0, sindiranList.length-1)];
         $("res").innerHTML = `<span style="color:#ff3d00; text-shadow: 0 0 10px rgba(255,61,0,0.5);">💀 SALAH! ${randomSindir}</span>`;
         triggerFlowerExplosion('red');
@@ -739,7 +752,6 @@ function checkAnswer() {
         htmlSteps += `<div class="step"><span class="step-label">Langkah ${i+1}:</span> ${step}</div>`;
     });
     
-    // Tampilkan jawaban benar jika salah
     if(!isCorrect) {
         let correctVal = Array.isArray(key) ? key[0] : key;
         htmlSteps += `<div style="margin-top:10px; border-top:1px dashed #555; paddingTop:5px;">Jawabannya <b>${correctVal}</b> Le.</div>`;
