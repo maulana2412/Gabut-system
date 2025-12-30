@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-<title>MATEMATIKA GABUT (FIXED)</title>
+<title>MATEMATIKA GABUT (FIXED UPDATE)</title>
 <style>
 /* =========================================
    1. CORE STYLES & VARIABLES
@@ -206,8 +206,8 @@ sup { font-size: 0.7em; vertical-align: super; color: #ffd700; margin-left: 1px;
 
 <div class="container hidden" id="modePage" style="text-align:center;">
     <h3 class="center" style="margin-bottom:25px; color:#fff; text-shadow: 0 2px 4px rgba(0,0,0,0.5);">PILIH LEVEL TA' BOSKU:</h3>
-    <button onclick="selectMode('normal')" style="background:linear-gradient(135deg, #9c27b0, #673ab7); padding: 25px;">😎 MODE SANTUY (Masih Maba)</button>
-    <button onclick="selectMode('hard')" style="background:linear-gradient(135deg, #d32f2f, #c2185b); padding: 25px;">💀 MODE SEPUH (ARTEFAK KAMPUS)</button>
+    <button onclick="selectMode('normal')" style="background:linear-gradient(135deg, #9c27b0, #673ab7); padding: 25px;">😎 MODE SANTUY (DIFERENSIAL)</button>
+    <button onclick="selectMode('hard')" style="background:linear-gradient(135deg, #d32f2f, #c2185b); padding: 25px;">💀 MODE SEPUH (INTEGRAL)</button>
 </div>
 
 <div class="container hidden" id="home">
@@ -343,7 +343,7 @@ const dbMatkul = [
 ];
 
 /* =========================================
-   LIST KATA-KATA (BUCIN & EJEKAN) - DIEDIT DISINI
+   LIST KATA-KATA
    ========================================= */
 const sindiranList = [
     "Aih, bikin malu orang tua di kampung!", 
@@ -358,7 +358,6 @@ const sindiranList = [
     "Hadeh, beban keluarga betul."
 ];
 
-// LIST BUCIN - DITAMBAHKAN NAMA NANTI DI FUNGSI CHECK
 const gombalanList = [
     "Duh, meleleh aku liat pintarmu", 
     "Makin sayang deh sama", 
@@ -406,10 +405,10 @@ function selectMode(mode) {
     currentMode = mode;
     if (mode === 'hard') {
         document.body.classList.add('mode-hard');
-        $("modeDisplay").innerText = "MODE SEPUH";
+        $("modeDisplay").innerText = "MODE SEPUH (INTEGRAL)";
     } else {
         document.body.classList.remove('mode-hard');
-        $("modeDisplay").innerText = "MODE SANTUY";
+        $("modeDisplay").innerText = "MODE SANTUY (DIFERENSIAL)";
     }
     renderKRS(); 
     $("modePage").classList.add("hidden");
@@ -580,64 +579,115 @@ function genAljabar() {
     }
 }
 
-/* --- 2. KALKULUS (LIMIT, TURUNAN, INTEGRAL) --- */
+/* --- 2. KALKULUS (MODIFIKASI: DIFERENSIAL vs INTEGRAL) --- */
 function genKalkulus() {
-    const db = [
-        // --- SOAL LAMA ---
-        { q: "Hitung nilai dari lim x→2 (3x² - 1)?", a: "11", s: "Substitusi langsung: 3(2)² - 1 = 3(4) - 1 = 12 - 1 = <b>11</b>." },
-        { q: "Turunan pertama f(x) = 5x³ adalah... (Contoh tulis: 15x^2)", a: ["15x^2", "15x^2"], s: "Aturan Pangkat: Kalikan pangkat ke depan (3x5), kurangi pangkatnya 1. Jadi <b>15x²</b>." },
-        { q: "Turunan dari sin(x) adalah...", a: ["cos(x)", "cos x", "cosinus"], s: "Hafalan dasar trigonometri: Turunan sin(x) adalah <b>cos(x)</b>." },
+    // === MODE SANTUY: DIFERENSIAL (TURUNAN & LIMIT) ===
+    const dbSantuy = [
+        // --- LIMIT DASAR & ALJABAR ---
+        { q: "Hitung lim x→2 dari (3x + 5).", a: "11", s: "Substitusi langsung saja: 3(2) + 5 = 6 + 5 = <b>11</b>." },
+        { q: "Nilai lim x→3 (x² - 9) / (x - 3) adalah...", a: "6", s: "Faktorkan (x-3)(x+3). Coret (x-3). Sisa x+3 → 3+3 = <b>6</b>." },
+        { q: "Lim x→∞ dari (4x² + x) / (2x² - 5). Ambil koefisien pangkat tertinggi.", a: "2", s: "Pangkat tertinggi x². Koefisien 4 dibagi 2 = <b>2</b>." },
+        { q: "Lim x→0 dari (sin x / x) adalah...", a: "1", s: "Ini limit trigonometri dasar, Le. Jawabannya <b>1</b>." },
+        { q: "Lim x→4 dari konstanta 10 adalah?", a: "10", s: "Limit konstanta ya tetap konstanta itu sendiri. Jawabannya <b>10</b>." },
+        { q: "Lim x→∞ (1/x) = ...", a: "0", s: "Satu dibagi angka buesar sekali, hasilnya mendekati <b>0</b>." },
+        { q: "Lim x→1 (x² + 2x - 3) / (x - 1).", a: "4", s: "Faktorkan: (x+3)(x-1). Coret (x-1). Masukkan 1 ke (x+3) → <b>4</b>." },
+        { q: "Lim x→0 (tan 5x / 3x) = ...", a: ["5/3", "1.67"], s: "Ambil koefisiennya saja: <b>5/3</b>." },
+        { q: "Jika f(x) kontinu di x=c, maka lim x→c f(x) sama dengan?", a: ["f(c)", "fc"], s: "Definisi kontinuitas: Limit kiri = Limit kanan = <b>f(c)</b>." },
+        { q: "Lim x→∞ (3x / x²) = ...", a: "0", s: "Pangkat bawah lebih besar dari atas, hasilnya pasti <b>0</b>." },
         
-        // --- PERBAIKAN SOAL TURUNAN COS(X) ---
-        { q: "Turunan dari cos(x) adalah... (ingat tandanya)", a: ["-sin(x)", "-sin x"], s: "Turunan dari cos(x) adalah <b>-sin(x)</b>. Jangan lupa tanda negatifnya Le!" },
+        // --- TURUNAN DASAR ---
+        { q: "Turunan pertama f(x) = 5x³ adalah...", a: ["15x^2", "15x pangkat 2"], s: "Pangkat 3 kali ke depan (3x5), pangkat kurang 1. Jadi <b>15x²</b>." },
+        { q: "Jika y = x, maka y' = ...", a: "1", s: "Turunan dari x pangkat 1 adalah <b>1</b>." },
+        { q: "Turunan dari f(x) = 7 (konstanta) adalah?", a: "0", s: "Turunan dari angka yang berdiri sendiri selalu <b>0</b>." },
+        { q: "Turunan f(x) = 2x⁵ - 3x² adalah...", a: ["10x^4 - 6x", "10x^4-6x"], s: "Turunkan satu-satu: 10x⁴ dan 6x. Gabung jadi <b>10x⁴ - 6x</b>." },
+        { q: "Jika f(x) = x⁻², turunannya adalah? (pakai ^)", a: ["-2x^-3", "-2x pangkat -3"], s: "Pangkat -2 turun, pangkat dikurang 1 (-2-1). Jadi <b>-2x⁻³</b>." },
+        { q: "Turunan dari √x (akar x) adalah... (format: 1/(2√x))", a: ["1/(2√x)", "1/2√x"], s: "√x itu x^(1/2). Turunannya 1/2 x^(-1/2) atau <b>1/(2√x)</b>." },
+        { q: "Cari f'(x) jika f(x) = 1/x.", a: ["-1/x^2", "-x^-2"], s: "1/x = x⁻¹. Turunannya -1x⁻² atau <b>-1/x²</b>." },
+        { q: "Turunan y = π² (pi kuadrat) adalah...", a: "0", s: "π² itu angka/konstanta bosku, bukan variabel. Turunannya <b>0</b>." },
+        { q: "Jika y = 6x + 2, maka y' = ...", a: "6", s: "Turunan linear ax+b adalah a. Jadi <b>6</b>." },
+        { q: "Turunan ke-2 dari f(x) = x³ adalah...", a: "6x", s: "Turunan ke-1: 3x². Turunan ke-2: 2 dikali 3x jadi <b>6x</b>." },
 
-        { q: "Integral dari ∫ 4x³ dx adalah... (abaikan +C, tulis pangkat pakai ^)", a: ["x^4", "x pangkat 4"], s: "Pangkat ditambah 1 (3+1=4). Bagi koefisien dengan pangkat baru (4/4=1). Hasil: <b>x^4</b>." },
-        { q: "Jika f(x) = e^(2x), gunakan aturan rantai untuk mencari f'(0).", a: "2", s: "Turunannya f'(x) = 2e^(2x). Masukkan x=0 → 2(e^0) = 2(1) = <b>2</b>." },
-        { q: "Limit x→∞ dari (4x² + 5) / (2x² - 1) adalah?", a: "2", s: "Lihat pangkat tertinggi saja: 4x² dibagi 2x² = 4/2 = <b>2</b>." },
-        { q: "Cari titik kritis (x) dari f(x) = x² - 6x + 5. (Saat f'(x)=0)", a: "3", s: "Turunkan: 2x - 6. Samakan nol: 2x = 6, maka <b>x = 3</b>." },
-        { q: "Hitung nilai integral tentu ∫(batas 0 sd 2) dari 3x² dx.", a: "8", s: "Integralkan jadi x³. Masukkan batas atas (2³) dikurang batas bawah (0³). 8 - 0 = <b>8</b>." },
-        { q: "Secara geometri, turunan f'(x) itu melambangkan apa?", a: ["gradien", "kemiringan", "slope", "garis singgung"], s: "Turunan pertama adalah <b>gradien/kemiringan</b> garis singgung kurva." },
-        { q: "Turunan dari ln(x) adalah...", a: ["1/x", "1 per x", "x^-1"], s: "Rumus dasar turunan logaritma natural ln(x) adalah <b>1/x</b>." },
-        
-        // --- TAMBAHAN SOAL LIMIT ---
-        { q: "Nilai dari lim x→0 (sin x / x) adalah?", a: "1", s: "Ini adalah limit trigonometri dasar. Hafalan wajib: lim x→0 (sin x / x) = <b>1</b>." },
-        { q: "Hitung lim x→4 (√x - 2) / (x - 4).", a: ["0.25", "1/4"], s: "Kalikan sekawan (√x + 2). Hasil akhirnya 1/(√x + 2). Masukkan x=4 → 1/(2+2) = <b>1/4</b>." },
-        { q: "Nilai lim x→∞ (1/x) adalah?", a: "0", s: "Jika 1 dibagi bilangan yang sangat besar (tak hingga), hasilnya mendekati <b>0</b>." },
-        { q: "Lim x→-2 (x² - 4) / (x + 2) = ...", a: "-4", s: "Faktorkan (x-2)(x+2). Coret (x+2). Sisa x-2. Masukkan -2 → -2 - 2 = <b>-4</b>." },
-        { q: "Lim x→0 (tan 2x / x) = ...", a: "2", s: "Pakai sifat limit trig: tan(ax)/bx = a/b. Di sini 2/1 = <b>2</b>." },
-        { q: "Berapa limit x→3 dari konstanta 7?", a: "7", s: "Limit dari konstanta adalah konstanta itu sendiri. Jawabannya <b>7</b>." },
-        { q: "Lim x→∞ (3x³ + x) / (x³ - 5) ambil pangkat tertingginya!", a: "3", s: "Pangkat tertinggi x³. Koefisien atas 3, bawah 1. 3/1 = <b>3</b>." },
-        { q: "Hitung lim x→1 (x² + 2x - 3) / (x - 1).", a: "4", s: "Faktorkan: (x+3)(x-1). Coret (x-1). Sisa x+3. Masukkan 1 → 1+3 = <b>4</b>." },
+        // --- TURUNAN TRIGONOMETRI & LOG ---
+        { q: "Turunan dari sin(x) adalah...", a: ["cos(x)", "cos x"], s: "Hafalan mati: Turunan sin adalah <b>cos</b>." },
+        { q: "Turunan dari cos(x) adalah... (awas tanda)", a: ["-sin(x)", "-sin x"], s: "Ingat! Turunan cos ada negatifnya: <b>-sin(x)</b>." },
+        { q: "Turunan dari tan(x) adalah...", a: ["sec^2(x)", "secan kuadrat"], s: "Turunan tan adalah <b>sec²(x)</b>." },
+        { q: "Turunan dari y = eˣ adalah...", a: ["e^x", "e pangkat x"], s: "Fungsi paling santuy, tidak berubah. Tetap <b>eˣ</b>." },
+        { q: "Turunan dari ln(x) adalah...", a: ["1/x", "1 per x"], s: "Turunan Logaritma Natural ln(x) adalah <b>1/x</b>." },
+        { q: "Turunan dari sin(2x) adalah... (Aturan Rantai)", a: ["2cos(2x)", "2 cos 2x"], s: "Turunkan sin jadi cos, lalu kali turunan dalamnya (2x jadi 2). <b>2cos(2x)</b>." },
+        { q: "Turunan dari cos(3x) adalah...", a: ["-3sin(3x)", "-3 sin 3x"], s: "Turunan cos min sin. Kali 3. Jadi <b>-3sin(3x)</b>." },
+        { q: "Turunan dari e²ˣ adalah...", a: ["2e^2x", "2e pangkat 2x"], s: "Turunkan pangkatnya (2x jadi 2) taruh depan. <b>2e²ˣ</b>." },
+        { q: "Turunan dari f(x) = ln(5x) adalah...", a: ["1/x", "1 per x"], s: "Rumus cepat: Turunan ln(ax) tetap <b>1/x</b>." },
+        { q: "Turunan sec(x) adalah...", a: ["sec(x)tan(x)", "sec x tan x"], s: "Agak hapalan ini Le: <b>sec(x)tan(x)</b>." },
 
-        // --- TAMBAHAN SOAL TURUNAN ---
-        { q: "Turunan pertama f(x) = 7x adalah?", a: "7", s: "Turunan dari kx adalah k. Jadi <b>7</b>." },
-        { q: "Jika y = x⁻², maka y' = ... (tulis pangkat negatif pakai ^-)", a: ["-2x^-3", "-2/x^3"], s: "Pangkat -2 turun ke depan, pangkat dikurangi 1 (-2-1=-3). Jadi <b>-2x^-3</b>." },
-        { q: "Turunan dari f(x) = cos(2x) adalah... (ingat aturan rantai)", a: ["-2sin(2x)", "-2 sin 2x"], s: "Turunan cos adalah -sin. Kalikan turunan dalamnya (2x jadi 2). Hasil: <b>-2sin(2x)</b>." },
-        { q: "Turunan dari tan(x) adalah?", a: ["sec^2(x)", "secan kuadrat", "sec^2 x"], s: "Rumus dasar: Turunan tan(x) adalah <b>sec²(x)</b>." },
-        { q: "Cari f'(x) jika f(x) = ln(x²).", a: ["2/x", "2 per x"], s: "Sifat log: ln(x²) = 2 ln(x). Turunannya 2(1/x) = <b>2/x</b>." },
-        { q: "Turunan dari y = eˣ adalah...", a: ["e^x", "e pangkat x"], s: "Fungsi paling santuy. Turunan e^x tetap <b>e^x</b>." },
-        { q: "Jika f(x) = (2x + 1)⁵, berapakah f'(0)? (Hitung nilainya)", a: "10", s: "Turunan: 5(2x+1)⁴ . 2 = 10(2x+1)⁴. Masukkan x=0 → 10(1)⁴ = <b>10</b>." },
-        { q: "Gradien garis singgung kurva y = x² di titik x=3 adalah?", a: "6", s: "Gradien = turunan pertama (2x). Masukkan x=3 → 2(3) = <b>6</b>." },
-        { q: "Turunan kedua f''(x) dari f(x) = x⁴ adalah?", a: ["12x^2", "12x pangkat 2"], s: "Turunan pertama: 4x³. Turunan kedua: 3x4 jadi <b>12x²</b>." },
-        { q: "Turunan dari konstanta pi (π) adalah?", a: "0", s: "Pi itu angka/konstanta. Turunan angka yang berdiri sendiri selalu <b>0</b>." },
-        { q: "Jika s(t) = t³ - 3t adalah posisi, kapan kecepatannya nol? (t>0)", a: "1", s: "Kecepatan v = s' = 3t² - 3. 3t² - 3 = 0 → t²=1 → <b>t=1</b>." },
-        { q: "Gunakan aturan perkalian (uv)' untuk y = x sin x. Apa turunan awalnya?", a: ["sin x + x cos x", "sin(x) + x cos(x)"], s: "u=x, v=sin x. u'=1, v'=cos x. Rumus u'v + uv' → <b>sin x + x cos x</b>." },
-
-        // --- TAMBAHAN SOAL INTEGRAL ---
-        { q: "Integral tak tentu ∫ 5 dx adalah?", a: ["5x", "5x + c"], s: "Integral konstanta tinggal tambah x. Jadi <b>5x</b>." },
-        { q: "Hasil ∫ x⁵ dx adalah... (tulis 1/6 x^6)", a: ["1/6 x^6", "x^6/6"], s: "Pangkat tambah 1 jadi 6. Bagi koefisien dengan 6. Hasil: <b>1/6 x^6</b>." },
-        { q: "Integral dari cos(x) adalah?", a: ["sin(x)", "sin x"], s: "Kebalikan turunan. Turunan sin adalah cos, jadi integral cos adalah <b>sin(x)</b>." },
-        { q: "Hitung integral tentu ∫ (0 sampai 1) dari 2x dx.", a: "1", s: "Integral 2x adalah x². Masukkan batas: 1² - 0² = <b>1</b>." },
-        { q: "Hasil ∫ e²ˣ dx adalah...", a: ["1/2 e^2x", "0.5 e^2x"], s: "Integral e^(ax) adalah (1/a)e^(ax). Jadi <b>1/2 e^2x</b>." },
-        { q: "∫ (1/x) dx = ...", a: ["ln(x)", "ln x", "ln|x|"], s: "Rumus dasar integral pecahan 1/x adalah <b>ln(x)</b>." },
-        { q: "Berapa nilai ∫ (0 sampai π) sin(x) dx?", a: "2", s: "Integral sin adalah -cos. Batas π dan 0. -cos(π) - (-cos(0)) = -(-1) - (-1) = 1+1=<b>2</b>." },
-        { q: "Integral dari (2x + 3)² dx dengan substitusi u=2x+3, hasilnya ada faktor pengali berapa?", a: ["1/2", "0.5", "setengah"], s: "Karena u = 2x+3, maka du = 2 dx → dx = du/2. Faktor pengalinya <b>1/2</b>." },
-        { q: "Jika F'(x) = f(x), maka ∫ f(x) dx disebut...", a: ["antiturunan", "integral", "primitif"], s: "Integral sering disebut juga sebagai <b>Antiturunan</b>." },
-        { q: "Integral ∫ x⁻³ dx adalah... (tulis pangkat negatif)", a: ["-1/2 x^-2", "-0.5 x^-2"], s: "Pangkat -3 + 1 = -2. Bagi koefisien dengan -2. Jadi <b>-1/2 x⁻²</b>." }
+        // --- APLIKASI TURUNAN ---
+        { q: "Gradien garis singgung y=x² di titik x=3?", a: "6", s: "Gradien = y'. y'=2x. Masukkan 3 → 2(3) = <b>6</b>." },
+        { q: "Titik stasioner f(x) = x² - 4x terjadi saat x = ...", a: "2", s: "Syarat stasioner f'(x)=0. 2x - 4 = 0 → 2x=4 → <b>x=2</b>." },
+        { q: "Jika s(t) = t² adalah posisi, kecepatan saat t=3 adalah?", a: "6", s: "Kecepatan = turunan posisi (2t). Masukkan 3 → <b>6</b>." },
+        { q: "Turunan digunakan untuk mencari nilai Max/Min. Benar/Salah?", a: ["benar", "true"], s: "<b>Benar</b>. Titik kritis didapat dari turunan pertama = 0." },
+        { q: "Apakah fungsi f(x)=|x| punya turunan di x=0?", a: ["tidak", "no", "salah"], s: "<b>Tidak</b>. Grafiknya tajam (menikung tajam) di 0, jadi tidak terdiferensiasi." },
+        { q: "Gunakan aturan perkalian (uv)' untuk y = x sin x. Hasilnya?", a: ["sin x + x cos x", "sin x+x cos x"], s: "u=x, v=sin x. u'v + uv' = <b>sin x + x cos x</b>." },
+        { q: "Turunan dari f(x) = (2x + 1)⁵ saat x=0?", a: "10", s: "Rantai: 5(2x+1)⁴ . 2 = 10(2x+1)⁴. Masukkan 0 → 10(1) = <b>10</b>." },
+        { q: "Laju perubahan sesaat disebut juga...", a: ["turunan", "derivatif"], s: "Definisi turunan adalah <b>laju perubahan sesaat</b>." },
+        { q: "Gradien garis singgung y = 3x - 1 adalah?", a: "3", s: "Fungsi linear, gradiennya koefisien x yaitu <b>3</b>." },
+        { q: "Turunan dari konstanta k dikali f(x) adalah k dikali f'(x). Benar/Salah?", a: ["benar", "true"], s: "<b>Benar</b>. Konstanta pengali boleh keluar dari turunan." }
     ];
 
-    // Ambil soal secara acak dari database di atas
-    let item = randArr(db);
+    // === MODE SEPUH: INTEGRAL (TENTU, TAK TENTU, TEKNIK) ===
+    const dbSepuh = [
+        // --- INTEGRAL TAK TENTU (BASIC) ---
+        { q: "∫ 5 dx = ... (abaikan +C)", a: "5x", s: "Integral konstanta tinggal tambah x. Jadi <b>5x</b>." },
+        { q: "∫ x dx = ...", a: ["1/2 x^2", "0.5 x^2", "x^2/2"], s: "Pangkat 1 jadi 2. Bagi koefisien dengan 2. <b>1/2 x²</b>." },
+        { q: "∫ x⁴ dx = ...", a: ["1/5 x^5", "x^5/5"], s: "Pangkat n jadi n+1. <b>1/5 x⁵</b>." },
+        { q: "∫ 6x² dx = ...", a: ["2x^3", "2x pangkat 3"], s: "Pangkat 2 jadi 3. 6 dibagi 3 = 2. Hasil <b>2x³</b>." },
+        { q: "∫ (1/x²) dx = ... (Ingat x pangkat -2)", a: ["-1/x", "-x^-1"], s: "x⁻² diintegral jadi x⁻¹/-1. Alias <b>-1/x</b>." },
+        { q: "∫ (√x) dx = ... (koefisien pecahan)", a: ["2/3 x^3/2", "2/3 x^(3/2)"], s: "Pangkat 1/2 + 1 = 3/2. Dibagi 3/2 sama dengan dikali 2/3. <b>2/3 x^(3/2)</b>." },
+        { q: "∫ (2x + 3) dx = ...", a: ["x^2 + 3x", "x^2+3x"], s: "Integralkan satu-satu. 2x jadi x², 3 jadi 3x. <b>x² + 3x</b>." },
+        { q: "Anti-turunan dari f(x) = 0 adalah?", a: ["c", "konstanta"], s: "Turunan konstanta adalah 0, jadi integral 0 adalah <b>Konstanta (C)</b>." },
+        { q: "∫ 10x⁹ dx = ...", a: ["x^10", "x pangkat 10"], s: "10x⁹ naik pangkat jadi <b>x¹⁰</b>." },
+        { q: "∫ dx (Integral 1 dx) = ...", a: "x", s: "Integral 1 adalah <b>x</b>." },
+
+        // --- INTEGRAL TRIGONOMETRI & EKSPONEN ---
+        { q: "∫ cos(x) dx = ...", a: ["sin(x)", "sin x"], s: "Turunan sin adalah cos, jadi integral cos adalah <b>sin(x)</b>." },
+        { q: "∫ sin(x) dx = ... (awas tanda)", a: ["-cos(x)", "-cos x"], s: "Turunan cos itu -sin. Jadi integral sin harus <b>-cos(x)</b> biar positif." },
+        { q: "∫ sec²(x) dx = ...", a: ["tan(x)", "tan x"], s: "Ingat turunan tan? Maka integral sec²x adalah <b>tan(x)</b>." },
+        { q: "∫ eˣ dx = ...", a: ["e^x", "e pangkat x"], s: "Tetap sama bosku. <b>eˣ</b>." },
+        { q: "∫ (1/x) dx = ...", a: ["ln(x)", "ln x", "ln|x|"], s: "Integral 1/x adalah Logaritma Natural <b>ln(x)</b>." },
+        { q: "∫ e²ˣ dx = ... (koefisien)", a: ["1/2 e^2x", "0.5 e^2x"], s: "Ada faktor 1/a. Jadi <b>1/2 e²ˣ</b>." },
+        { q: "∫ sin(2x) dx = ...", a: ["-1/2 cos(2x)", "-0.5 cos(2x)"], s: "Integral sin jadi -cos. Faktor 2x jadi pembagi 1/2. <b>-1/2 cos(2x)</b>." },
+        { q: "∫ cos(5x) dx = ...", a: ["1/5 sin(5x)", "0.2 sin(5x)"], s: "Integral cos jadi sin. Ada 1/5. <b>1/5 sin(5x)</b>." },
+        { q: "∫ csc²(x) dx = ...", a: ["-cot(x)", "-cot x"], s: "Kebalikan turunan cot. Hasilnya <b>-cot(x)</b>." },
+        { q: "∫ 2^x dx = ... (pembaginya)", a: ["2^x / ln 2", "2^x/ln(2)"], s: "Rumus eksponen basis a: a^x / ln(a). Jadi <b>2^x / ln 2</b>." },
+
+        // --- INTEGRAL TENTU (ADA BATAS) ---
+        { q: "∫ (0 sampai 2) dari 2x dx = ...", a: "4", s: "Integral x². Batas atas 2² - 0² = 4-0 = <b>4</b>." },
+        { q: "∫ (0 sampai 1) dari 3x² dx = ...", a: "1", s: "Integral x³. Batas 1³ - 0³ = <b>1</b>." },
+        { q: "∫ (1 sampai 2) dari dx = ...", a: "1", s: "Integral x. Masukkan 2 - 1 = <b>1</b>." },
+        { q: "∫ (0 sampai π) sin(x) dx = ...", a: "2", s: "-cos(π) - (-cos(0)) = -(-1) - (-1) = 1+1 = <b>2</b>." },
+        { q: "∫ (-1 sampai 1) x³ dx = ... (Fungsi ganjil)", a: "0", s: "Fungsi ganjil dengan batas simetris (-a sampai a) hasilnya <b>0</b>." },
+        { q: "∫ (1 sampai e) (1/x) dx = ...", a: "1", s: "Integral ln(x). ln(e) - ln(1) = 1 - 0 = <b>1</b>." },
+        { q: "Luas daerah di bawah kurva y=x dari 0 sampai 5?", a: "12.5", s: "Integral x adalah 1/2 x². Masukkan 5: 1/2(25) = <b>12.5</b>." },
+        { q: "∫ (0 sampai 4) √x dx = ... (Desimal atau pecahan)", a: ["16/3", "5.33"], s: "Integral 2/3 x^(3/2). 2/3 (4)^(3/2) = 2/3(8) = <b>16/3</b>." },
+        { q: "∫ (0 sampai ln 2) eˣ dx = ...", a: "1", s: "Integral eˣ. e^(ln 2) - e⁰ = 2 - 1 = <b>1</b>." },
+        { q: "Jika F'(x) = f(x), maka ∫ (a sampai b) f(x) dx = F(b) - F(a). Teorema apa?", a: ["teorema dasar kalkulus", "tdk"], s: "Ini adalah <b>Teorema Dasar Kalkulus</b>." },
+
+        // --- TEKNIK INTEGRASI (SUBSTITUSI & PARSIAL) ---
+        { q: "Pada ∫ (2x+1)⁵ dx, misal u = ...", a: ["2x+1", "2x + 1"], s: "Substitusi bagian dalam kurung, <b>u = 2x + 1</b>." },
+        { q: "Jika u = x², maka du = ...", a: ["2x dx", "2x"], s: "Turunkan u terhadap x: <b>2x dx</b>." },
+        { q: "∫ 2x(x² + 1)³ dx hasilnya mengandung pangkat berapa?", a: "4", s: "Hasilnya 1/4 (x²+1)⁴. Jadi pangkat <b>4</b>." },
+        { q: "Rumus Integral Parsial: ∫ u dv = uv - ∫ ...", a: ["v du", "vdu"], s: "Rumus: uv - ∫ <b>v du</b>." },
+        { q: "Pada ∫ x eˣ dx, yang dipilih jadi u adalah?", a: "x", s: "Pilih u yang kalau diturunkan habis/sederhana. Pilih <b>u = x</b>." },
+        { q: "Substitusi trigonometri untuk √(a² - x²) adalah x = ...", a: ["a sin t", "a sin theta"], s: "Bentuk √(a² - x²) pakai substitusi <b>x = a sin θ</b>." },
+        { q: "∫ tan(x) dx = ln|...| + C", a: ["sec x", "sec(x)"], s: "Integral tan(x) = ln|<b>sec x</b>|." },
+        { q: "Volume benda putar y=x diputar sumbu x dari 0 sd 1 adalah ∫ π(...) dx", a: ["x^2", "x kuadrat"], s: "Rumus volume π∫(f(x))² dx. Jadi π∫<b>x²</b> dx." },
+        { q: "Integral dari 1/(1+x²) adalah invers dari trigonometri apa?", a: ["tan", "tangen"], s: "Hasilnya adalah arctan(x) atau invers <b>tan</b>." },
+        { q: "∫ x cos(x) dx diselesaikan dengan teknik apa?", a: ["parsial", "integral parsial"], s: "Perkalian fungsi aljabar & trigono pakai <b>Integral Parsial</b>." }
+    ];
+
+    // LOGIKA PEMILIHAN SOAL BERDASARKAN MODE
+    let dataset = (currentMode === 'hard') ? dbSepuh : dbSantuy;
+    
+    // Ambil soal acak
+    let item = dataset[Math.floor(Math.random() * dataset.length)];
     return { text: item.q, ans: item.a, steps: [item.s] };
 }
 
